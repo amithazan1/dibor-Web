@@ -1,9 +1,11 @@
 import { useRef } from 'react';
-function TopBar({ activeUser,setmessageQuery,setCurrentMessageIndex ,currentMessageIndex, totalFoundMessages,messageQuery}) {
+function TopBar({ activeUserChat,setmessageQuery,setCurrentMessageIndex ,currentMessageIndex, totalFoundMessages,messageQuery}) {
   
   const searchRef = useRef(null)
 
-  const isActive = activeUser.name ===  ""
+  const isActive = activeUserChat.user.username === "";
+  console.log("in top bar")
+  console.log(activeUserChat.user.profilePic)
 
   function search() {
     setmessageQuery(searchRef.current.value)
@@ -11,14 +13,14 @@ function TopBar({ activeUser,setmessageQuery,setCurrentMessageIndex ,currentMess
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid msg-bar">
-        {activeUser && activeUser.image && (
+        {!isActive && (
           <img
-            src={activeUser.image}
+            src={activeUserChat.user.profilePic}
             className="img-fluid rounded-circle profileImage"
             alt="Your Image"
           />
         )}
-        <strong className="contactName">{activeUser?.name}</strong>
+        <strong className="contactName">{activeUserChat.user.username}</strong>
 
         {totalFoundMessages === 0 && messageQuery !== '' && (
           <>

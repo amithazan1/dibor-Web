@@ -250,15 +250,16 @@ height: calc(80vh + 60px);
   background-color: rgb(224, 239, 253);
 }
 
-.chat-bubble.received {
+.recived {
+    max-width: 70%;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+  word-break: break-word;
   align-self: flex-end;
-  background-color: #f2f2f2;
-  color: black;
-}
-
-.chat-bubble.received + .chat-bubble.sent {
-  margin-top: -20px;
-  margin-left: 80%;
+  background-color: #47d47d;
+  color: rgb(255, 255, 255);
 }
 
 .searchChat {

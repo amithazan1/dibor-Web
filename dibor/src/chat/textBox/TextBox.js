@@ -1,25 +1,85 @@
 import { useState, useRef, useEffect } from "react";
 import ChatBubbleSent from './ChatBubbleSent'
+import ChatBubbleRecived from "./ChatBubbleRecived";
 
 //all of the text logic
-function TextBox({activeUser, addMsg,messageQuery,currentMessageIndex,setCurrentMessageIndex,setTotalFoundMessages}) {
+function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,currentMessageIndex,setCurrentMessageIndex,setTotalFoundMessages}) {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
 
   const chatRef = useRef(null);
 
- const isDisabled = activeUser.name === ""
+ const isDisabled = activeChatId === 0
+  const [messages, setMessages] = useState([]);
+  const [messagesRecived, setmessagesRecived] = useState([]);
+
+    useEffect(() => {
+      getMessages();
+}, [activeChatId]);
+
+
+
+  const getMessages = async function () {
+    console.log("get messages");
+
+
+  // Assuming you have the token stored in a variable called 'token'
+    console.log(activeChatId)
+    const res = await fetch(`http://localhost:5000/api/Chats/${activeChatId}/Messages`, {
+     method: 'get',
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization':  `Bearer ${token}`,
+      },
+
+  });
+
+    const data = await res.json(); // Extract the JSON data from the response
+    console.log(messages)
+
+    console.log(data)
+    setMessages(data);
+  
+
+  // You can add code here to handle the response
+};
+
+  const  sendMessage = async function (sendmsg) {
+    console.log("send message");
+    console.log(activeChatId)
+
+
+  // Assuming you have the token stored in a variable called 'token'
+
+    const res = await fetch(`http://localhost:5000/api/Chats/${activeChatId}/Messages`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':` Bearer ${token}`,
+      },
+    body: JSON.stringify({ msg: sendmsg }), // Use object property shorthand
+
+  });
+
+    
+  
+
+  // You can add code here to handle the response
+};
 
   
-  const handleSendClick = () => {
-    const newMessage = inputValue.trim();
-    const timestamp = new Date();
-    if (newMessage !== "") {
-      addMsg(newMessage,timestamp);
-      setInputValue("");
-      inputRef.current.focus();
-    }
-  };
+const handleSendClick = async () => {
+  const newMessage = inputValue.trim();
+  if (newMessage !== "") {
+    await sendMessage(newMessage); // Wait for sendMessage to complete
+    getMessages();
+    setInputValue("");
+    inputRef.current.focus();
+    showUsers();
+
+  }
+};
+
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -37,8 +97,8 @@ function TextBox({activeUser, addMsg,messageQuery,currentMessageIndex,setCurrent
   useEffect(() => {
     let count = 0;
     if (messageQuery !== "") {
-      for (let i = 0; i < activeUser.messages.length; i++) {
-        const message = activeUser.messages[i].text.toLowerCase();
+      for (let i = 0; i < messages.length; i++) {
+        const message = messages[i].content.toLowerCase();
         if (message.includes(messageQuery)) {
           count++;
         }
@@ -48,29 +108,35 @@ function TextBox({activeUser, addMsg,messageQuery,currentMessageIndex,setCurrent
 
   setTotalFoundMessages(count);
   setCurrentMessageIndex(0);
-}, [messageQuery,activeUser]);
+}, [messageQuery,messages]);
+
 
 
   useEffect(() => {
-          const messages = chatRef.current.querySelectorAll('.message');
 
-    for (let i = 0; i < activeUser.messages.length; i++) {
+    const messagesInChat = chatRef.current.querySelectorAll('.message');
+    console.log("messagesInChat")
+    console.log(messagesInChat)
 
-           messages[i].classList.remove("selected");
+    for (let i = 0; i < messagesInChat.length; i++) {
+
+           messagesInChat[i].classList.remove("selected");
 
     }
     if (messageQuery !== "") {
 
       let count = 0;
 
-      for (let i = 0; i < activeUser.messages.length; i++) {
-        const message = activeUser.messages[i].text.toLowerCase();
+      for (let i = 0; i < messagesInChat.length; i++) {
+        const message = messagesInChat[i].outerText.toLowerCase();
+        console.log(message)
 
         if (message.includes(messageQuery)) {
 
           if (count === currentMessageIndex) {
 
-            const messageElement = messages[i];
+            const messageElement = messagesInChat[i];
+
                       messageElement.classList.add("selected");
 
             const { offsetTop, offsetHeight } = messageElement;
@@ -86,26 +152,36 @@ function TextBox({activeUser, addMsg,messageQuery,currentMessageIndex,setCurrent
         }
       }
     }
-}, [currentMessageIndex,messageQuery,activeUser]);
+}, [currentMessageIndex,messageQuery,messages]);
 
 
 
   useEffect(() => {
+
     // Scroll the chat container to the bottom
     chatRef.current.scrollTop = chatRef.current.scrollHeight;
-  }, [activeUser?.messages]);
+    
+  }, [messages]);
+
+  
 
   return (
     <>
-      <div className="text chats"  ref={chatRef}>
-        <div className="chat-container">
-
-          {activeUser?.messages?.map((message, index) => (
-            <ChatBubbleSent key={index} message={message} />
-          ))}
-          <div className="input-container"></div>
-        </div>
-      </div>
+<div className="text chats" ref={chatRef}>
+  <div className="chat-container">
+    {messages.length > 0 ? (
+      [...messages].reverse().map((message, index) => (
+        message.sender.username !== activeUserChat.user.username ? (
+          <ChatBubbleSent key={index} message={message} />
+        ) : (
+          <ChatBubbleRecived key={index} message={message} />
+        )
+      ))
+    ) : (
+      <p>No messages available.</p>
+    )}
+  </div>
+</div>
 
 
 
