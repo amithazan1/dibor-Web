@@ -1,12 +1,20 @@
+import React from "react";
 
-import blank_profile_picture from '../blank-profile-picture.svg';
-
-//this is the contacts on the side of the chat
-function SidebarItem({ name, lastMsg, lastMsgTime, numOflastMsgs, image ,setActiveUserName,isActive }) {
-  
-
+function SidebarItem({ chat, setActiveChatId, isActive }) {
   const handleClick = () => {
-    setActiveUserName(name);
+    setActiveChatId(chat.id);
+  };
+
+  const getLastMessageTime = () => {
+    if (chat.lastMessage && chat.lastMessage.created) {
+      const createdTime = new Date(chat.lastMessage.created);
+      return createdTime.toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit",
+      });
+    }
+    
+    return "";
   };
 
   return (
@@ -21,22 +29,32 @@ function SidebarItem({ name, lastMsg, lastMsgTime, numOflastMsgs, image ,setActi
       <div className="row align-items-center">
         <div className="col-2">
           <img
-            src={image}
+            src={chat.user.profilePic}
             className="img-fluid rounded-circle profileImage"
             alt="Your Image"
           />
         </div>
         <div className="col-9">
           <div className="d-flex w-100 justify-content-between">
-            <div className="mb-1 contactName">{name}</div>
+            <div className="mb-1 contactName">{chat.user.displayName}</div>
           </div>
-          <div className="mb-1 small">  {lastMsg.length > 70 ? lastMsg.substring(0, 70) + "..." : lastMsg}</div>
+          <div className="mb-1 small">
+            {chat.lastMessage && chat.lastMessage.content ? (
+              chat.lastMessage.content.length > 70 ? (
+                chat.lastMessage.content.substring(0, 70) + "..."
+              ) : (
+                chat.lastMessage.content
+              )
+            ) : (
+              ""
+            )}
+          </div>
         </div>
         <div className="col-1">
-          <div className="row small"> {lastMsgTime}</div>
-          <span className="position-relative  badge rounded-pill unreadMessages small">
-            {numOflastMsgs}
-          </span>
+          <div className="row small">
+            {getLastMessageTime()}
+          </div>
+          <span className="position-relative  badge rounded-pill unreadMessages small"></span>
         </div>
       </div>
     </a>

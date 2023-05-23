@@ -1,13 +1,16 @@
-//chat bubbble for sending messeges
 
 function ChatBubbleSent({ message }) {
+  const messageTime = new Date(message.created).toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+
   return (
     <div className="chat-bubble sent">
-      <div className="message">{message.text}</div>
-      <div className="time">{message.timestamp}</div>
+      <div className="message">{message.content}</div>
+      <div className="time">{messageTime}</div>
     </div>
   );
 }
 
-export default ChatBubbleSent
-
+export default ChatBubbleSent;

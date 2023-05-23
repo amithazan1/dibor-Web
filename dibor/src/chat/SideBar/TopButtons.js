@@ -7,7 +7,7 @@ import blank_profile_picture from '../blank-profile-picture.svg';
 
 
 //top buttons above the contacts.
-function TopButtons({ setQuery, updateList, setCurrentUser ,currentUser}) {
+function TopButtons({showUsers, token,setQuery, updateList, setCurrentUser ,currentUser}) {
   
 
   function logOut() {
@@ -42,9 +42,38 @@ const [showInput, setShowInput] = useState(false);
     setName(event.target.value);
   }
 
+    const addUser = async function (username) {
+    console.log("add users");
+     const data = {
+    username: username
+  }
+
+
+    const res = await fetch('http://localhost:5000/api/Chats', {
+     method: 'post',
+      headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      },
+          'body': JSON.stringify(data)
+
+    });
+       if (res.ok) {
+    const data = await res.json(); // Extract the JSON data from the response
+         console.log(data); // Log the response data
+         showUsers();
+  } else {
+    console.log("Error:", res.status); // Log the error status if the response is not successful
+  }
+
+
+  // You can add code here to handle the response
+};
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    updateList({ name: name,messages: [], lastMsg: '', lastMsgTime: '', numOflastMsgs: 0 ,image : blank_profile_picture});
+    addUser(name);
     setName('');
   }
   
@@ -158,7 +187,6 @@ const [showInput, setShowInput] = useState(false);
                 role="button"
                 aria-controls="offcanvasExample"
               >
-              <img src={currentUser.picture}   className="img-fluid rounded-circle"  width={60}  height={60} ></img>
         </a>
         
              
