@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import ChatBubbleSent from './ChatBubbleSent'
 import ChatBubbleRecived from "./ChatBubbleRecived";
-
+import io from 'socket.io-client';
+const socket = io.connect('http://localhost:3001/');
 //all of the text logic
 function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,currentMessageIndex,setCurrentMessageIndex,setTotalFoundMessages}) {
   const [inputValue, setInputValue] = useState("");
@@ -13,19 +14,26 @@ function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,curre
   const [messages, setMessages] = useState([]);
   const [messagesRecived, setmessagesRecived] = useState([]);
 
-    useEffect(() => {
+   const joinRoom = () => {
+    if (activeChatId !== "") {
+        console.log("enterd chat"+ activeChatId)
+        socket.emit("enterChat", activeChatId)
+      }
+  };
+
+
+  useEffect(() => {
+      joinRoom();
       getMessages();
 }, [activeChatId]);
 
 
 
   const getMessages = async function () {
-    console.log("get messages");
 
-
+    if (activeChatId != 0) {
   // Assuming you have the token stored in a variable called 'token'
-    console.log(activeChatId)
-    const res = await fetch(`http://localhost:12345/api/Chats/${activeChatId}/Messages`, {
+    const res = await fetch(`http://localhost:5000/api/Chats/${activeChatId}/Messages`, {
      method: 'get',
       headers: {
       'Content-Type': 'application/json',
@@ -35,23 +43,29 @@ function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,curre
   });
 
     const data = await res.json(); // Extract the JSON data from the response
-    console.log(messages)
 
-    console.log(data)
     setMessages(data);
   
-
+}
   // You can add code here to handle the response
-};
+  };
+  
+  useEffect(() => {
+  // Listen for 'new-message' event
 
-  const  sendMessage = async function (sendmsg) {
-    console.log("send message");
-    console.log(activeChatId)
+    socket.on('recivedMessage', (data) => {
+      getMessages();
+    });
 
+  }, [socket]);
+  
+ 
+
+  const sendMessage = async function (sendmsg) {
 
   // Assuming you have the token stored in a variable called 'token'
 
-    const res = await fetch(`http://localhost:12345/api/Chats/${activeChatId}/Messages`, {
+    const res = await fetch(`http://localhost:5000/api/Chats/${activeChatId}/Messages`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -72,6 +86,7 @@ const handleSendClick = async () => {
   const newMessage = inputValue.trim();
   if (newMessage !== "") {
     await sendMessage(newMessage); // Wait for sendMessage to complete
+    socket.emit('sendMessage',{message: newMessage,room:activeChatId});
     getMessages();
     setInputValue("");
     inputRef.current.focus();
@@ -79,6 +94,8 @@ const handleSendClick = async () => {
 
   }
 };
+  
+
 
 
   const handleInputChange = (event) => {
@@ -115,8 +132,6 @@ const handleSendClick = async () => {
   useEffect(() => {
 
     const messagesInChat = chatRef.current.querySelectorAll('.message');
-    console.log("messagesInChat")
-    console.log(messagesInChat)
 
     for (let i = 0; i < messagesInChat.length; i++) {
 
@@ -129,7 +144,6 @@ const handleSendClick = async () => {
 
       for (let i = 0; i < messagesInChat.length; i++) {
         const message = messagesInChat[i].outerText.toLowerCase();
-        console.log(message)
 
         if (message.includes(messageQuery)) {
 
@@ -224,6 +238,8 @@ const handleSendClick = async () => {
           </button>
         </div>
       </div>
+      <div id="liveAlertPlaceholder"></div>
+
     </>
   );
 }

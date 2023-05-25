@@ -43,13 +43,12 @@ const [showInput, setShowInput] = useState(false);
   }
 
     const addUser = async function (username) {
-    console.log("add users");
      const data = {
     username: username
   }
 
 
-    const res = await fetch('http://localhost:5000/api/Chats', {
+    const res = await fetch('http://localhost:12345/api/Chats', {
      method: 'post',
       headers: {
       'Content-Type': 'application/json',
@@ -60,7 +59,7 @@ const [showInput, setShowInput] = useState(false);
     });
        if (res.ok) {
     const data = await res.json(); // Extract the JSON data from the response
-         console.log(data); // Log the response data
+
          showUsers();
   } else {
     console.log("Error:", res.status); // Log the error status if the response is not successful

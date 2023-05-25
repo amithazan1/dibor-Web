@@ -28,8 +28,6 @@ function Chat({ setCurrentUser, currentUser }) {
   //find the active user in database
 const activeUserChat = contacts.find(chat => chat.id === activeChatId) || { user: { username: '', displayName: '' } };
 
-  console.log("active user is ")
-  console.log(activeUserChat)
 
   const [token, setToken] = useState("");
 
@@ -66,7 +64,6 @@ const activeUserChat = contacts.find(chat => chat.id === activeChatId) || { user
   
 
 const connectFirst = async function () {
-  console.log("connecting");
   const data = {
     username: 'admin',
     password: '123456'
@@ -94,7 +91,6 @@ setToken(responseText)
 };
 
   const connectSecond = async function () {
-  console.log("connecting");
   const data = {
     username: 'simon1',
     password: 'Sf159357'
@@ -122,7 +118,6 @@ setToken(responseText)
   };
   
     const connectThird = async function () {
-  console.log("connecting");
   const data = {
     username: 'admin2',
     password: '123456'
@@ -150,7 +145,6 @@ setToken(responseText)
 };
 
   const addUserMine = async function () {
-    console.log("add users");
      const data = {
     username: 'admin2'
   }
@@ -167,13 +161,11 @@ setToken(responseText)
 
   });
 
-  console.log(JSON.stringify(res));
 
   // You can add code here to handle the response
 };
 
   const addUserHemi = async function () {
-    console.log("add users");
      const data = {
     username: 'admin2'
   }
@@ -190,13 +182,11 @@ setToken(responseText)
 
   });
 
-  console.log(JSON.stringify(res));
 
   // You can add code here to handle the response
 };
 
 const showUsers = async function () {
-  console.log("show users");
 
   // Assuming you have the token stored in a variable called 'token'
 
@@ -209,7 +199,6 @@ const showUsers = async function () {
 
   if (res.ok) {
     const data = await res.json(); // Extract the JSON data from the response
-    console.log(data); // Log the response data
     setFilteredUsers(data)
     setContacts(data)
   } else {
@@ -220,7 +209,6 @@ const showUsers = async function () {
 };
   
   const showUsersMe = async function () {
-  console.log("show users");
 
   // Assuming you have the token stored in a variable called 'token'
 
@@ -233,7 +221,6 @@ const showUsers = async function () {
 
   if (res.ok) {
     const data = await res.json(); // Extract the JSON data from the response
-    console.log(data); // Log the response data
     setFilteredUsers(data)
     setContacts(data)
   } else {
