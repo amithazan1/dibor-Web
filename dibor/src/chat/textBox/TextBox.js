@@ -25,7 +25,7 @@ function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,curre
 
   // Assuming you have the token stored in a variable called 'token'
     console.log(activeChatId)
-    const res = await fetch(`http://localhost:5000/api/Chats/${activeChatId}/Messages`, {
+    const res = await fetch(`http://localhost:12345/api/Chats/${activeChatId}/Messages`, {
      method: 'get',
       headers: {
       'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,curre
 
   // Assuming you have the token stored in a variable called 'token'
 
-    const res = await fetch(`http://localhost:5000/api/Chats/${activeChatId}/Messages`, {
+    const res = await fetch(`http://localhost:12345/api/Chats/${activeChatId}/Messages`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ const handleSendClick = async () => {
 <div className="text chats" ref={chatRef}>
   <div className="chat-container">
     {messages.length > 0 ? (
-      [...messages].reverse().map((message, index) => (
+      [...messages].map((message, index) => (
         message.sender.username !== activeUserChat.user.username ? (
           <ChatBubbleSent key={index} message={message} />
         ) : (

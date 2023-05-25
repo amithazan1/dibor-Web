@@ -149,7 +149,30 @@ setToken(responseText)
   }
 };
 
-  const addUser = async function () {
+  const addUserMine = async function () {
+    console.log("add users");
+     const data = {
+    username: 'admin2'
+  }
+
+  // Assuming you have the token stored in a variable called 'token'
+
+    const res = await fetch('http://localhost:12345/api/Chats', {
+     method: 'post',
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization':  `Bearer ${token}`,
+      },
+          'body': JSON.stringify(data)
+
+  });
+
+  console.log(JSON.stringify(res));
+
+  // You can add code here to handle the response
+};
+
+  const addUserHemi = async function () {
     console.log("add users");
      const data = {
     username: 'admin2'
@@ -171,7 +194,6 @@ setToken(responseText)
 
   // You can add code here to handle the response
 };
-
 
 const showUsers = async function () {
   console.log("show users");
@@ -196,6 +218,31 @@ const showUsers = async function () {
 
   // You can add code here to handle the response
 };
+  
+  const showUsersMe = async function () {
+  console.log("show users");
+
+  // Assuming you have the token stored in a variable called 'token'
+
+  const res = await fetch('http://localhost:12345/api/Chats', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+
+  if (res.ok) {
+    const data = await res.json(); // Extract the JSON data from the response
+    console.log(data); // Log the response data
+    setFilteredUsers(data)
+    setContacts(data)
+  } else {
+    console.log("Error:", res.status); // Log the error status if the response is not successful
+  }
+
+  // You can add code here to handle the response
+};
+  
 
   return (
     <>
@@ -203,8 +250,11 @@ const showUsers = async function () {
             <button onClick={connectSecond}>connectSecond</button>
             <button onClick={connectThird}>connectThird</button>
 
-      <button onClick={showUsers}>showUsers</button>
-      <button onClick={addUser}>addUser</button>
+      <button onClick={showUsers}>showUsersHemi</button>
+            <button onClick={showUsersMe}>showUsersMine</button>
+
+      <button onClick={addUserMine}>addUserMine</button>
+      <button onClick={addUserHemi}>addUserHemi</button>
 
       {/*main card of the app */}
   <div className="card chatbox">
