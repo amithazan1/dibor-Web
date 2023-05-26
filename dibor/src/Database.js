@@ -1,13 +1,46 @@
 const users = [];
 
-const addUser = (values) => {
-    users.push({
-        username: values.username,
-        password: values.password,
-        display: values.display,
-        picture: values.picture,
-    })
+const addUser = async (values) => {
+    const { confirm, ...userValues } = values;
+    const response = await fetch('http://localhost:5000/api/Users', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...userValues })
+    });
+
+    if (!response.ok)
+        return 0;
+    return 1;
 };
+
+const login = async (values) => {
+    const response = await fetch('http://localhost:5000/api/Tokens', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...values })
+    });
+    if (!response.ok)
+    {
+        return 0;
+    }
+    return response.token;
+
+};
+
+/*
+const addUser = (values) => {
+  
+  users.push({
+      username: values.username,
+      password: values.password,
+      display: values.display,
+      picture: values.picture,
+  })
+});
 
 const userExists = (username, password) => {
 
@@ -19,6 +52,7 @@ const userExists = (username, password) => {
     }
     return false
 };
+*/
 
 const getUser = (username) => {
 
@@ -34,8 +68,8 @@ const getUser = (username) => {
 
 
 
-export  {
+export {
     addUser,
-    userExists,
+    login,
     getUser
 };
