@@ -64,6 +64,8 @@ const activeUserChat = contacts.find(chat => chat.id === activeChatId) || { user
   };
   
   const getLoggedInUser = function () {
+            console.log("token is" + token)
+
     if (token) {
       try {
         // Decode the JWT to extract its payload
@@ -74,6 +76,7 @@ const activeUserChat = contacts.find(chat => chat.id === activeChatId) || { user
 
       } catch (error) {
         // Handle error if the token is invalid or decoding fails
+        setToken(0);
         console.error('Error decoding or verifying JWT:', error);
       }
     }
@@ -119,7 +122,7 @@ useEffect(() => {
       {/*upper bar of the chat*/}
       <div className="row top-bar">
         <div className="col-4 d-flex justify-content-start align-items-center chatsBar">
-              <TopButtons userNameInfo={userNameInfo} showUsers={showUsers} token={token} setQuery={setQuery} />
+              <TopButtons setToken={setToken} userNameInfo={userNameInfo} showUsers={showUsers} token={token} setQuery={setQuery} />
           </div>
         <div className="col-8 ">
               <TopBar  activeUserChat={activeUserChat} setmessageQuery={setmessageQuery} currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex}

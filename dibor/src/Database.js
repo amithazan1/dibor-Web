@@ -27,7 +27,7 @@ const login = async (values) => {
     {
         return 0;
     }
-    return response.token;
+     return await response.text();
 
 };
 

@@ -5,11 +5,11 @@ import { useRef } from 'react';
 
 
 //top buttons above the contacts.
-function TopButtons({userNameInfo,showUsers, token,setQuery }) {
+function TopButtons({setToken,userNameInfo,showUsers, token,setQuery }) {
   
 
   function logOut() {
-    //need to set logout
+    setToken(0)
   }
 
   const [showInput, setShowInput] = useState(false);
