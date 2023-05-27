@@ -2,14 +2,14 @@
 import { useState ,useEffect} from "react";
 import TopBar from './textBox/topBar/TopBar';
 import TextBox from './textBox/TextBox';
-import UserInfo from './UserInfo'
 import TopButtons from './SideBar/TopButtons';
-import { users } from './SideBar/users';
 import UserList from './SideBar/UserList';
+import jwtDecode from 'jwt-decode';
+import UserInfo from "./UserInfo";
 import './Chat.css';
 
 //this is the main chat page
-function Chat({ setCurrentUser, currentUser }) {
+function Chat({setToken,token }) {
 
   //state var for search messeges
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
@@ -28,10 +28,8 @@ function Chat({ setCurrentUser, currentUser }) {
   //find the active user in database
 const activeUserChat = contacts.find(chat => chat.id === activeChatId) || { user: { username: '', displayName: '' } };
 
-  console.log("active user is ")
-  console.log(activeUserChat)
 
-  const [token, setToken] = useState("");
+    const [userNameInfo, setUserNameInfo] = useState({});
 
 
   useEffect(() => {
@@ -39,146 +37,15 @@ const activeUserChat = contacts.find(chat => chat.id === activeChatId) || { user
     
   }, [query]);
 
-  const updateList = function (user) {
-   
-    
-  }
 
-  /*
-  useEffect(() => {
-    if (activeUserChat) {
-      const numOflastMsgs = 0;
 
-      activeUserChat.numOflastMsgs = 0;
-      setActiveChatId(activeUserChat.name);
-      const updatedUser = {
-        ...activeUserChat,
-        numOflastMsgs
-    
-      };
-      const updatedFilteredUsers = filteredUsers.map(user => (user.name === activeUserChat.name ? updatedUser : user));
-      setFilteredUsers(updatedFilteredUsers);
-    }
-  }, [activeChatId]);
 
-*/
 
-  
-
-const connectFirst = async function () {
-  console.log("connecting");
-  const data = {
-    username: 'admin',
-    password: '123456'
-  };
-
-  const res = await fetch('http://localhost:5000/api/Tokens', {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
-
-  // Check if the response is successful
-  if (res.ok) {
-    
-     const responseText = await res.text(); // Get the response text
-setToken(responseText)
-    
-    // You can add code here to handle the token
-  } else {
-    console.log("Error:", res.status);
-    // Handle the error if the response is not successful
-  }
-};
-
-  const connectSecond = async function () {
-  console.log("connecting");
-  const data = {
-    username: 'simon1',
-    password: 'Sf159357'
-  };
-
-  const res = await fetch('http://localhost:5000/api/Tokens', {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
-
-  // Check if the response is successful
-  if (res.ok) {
-    
-     const responseText = await res.text(); // Get the response text
-setToken(responseText)
-    
-    // You can add code here to handle the token
-  } else {
-    console.log("Error:", res.status);
-    // Handle the error if the response is not successful
-  }
-  };
-  
-    const connectThird = async function () {
-  console.log("connecting");
-  const data = {
-    username: 'admin2',
-    password: '123456'
-  };
-
-  const res = await fetch('http://localhost:5000/api/Tokens', {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  });
-
-  // Check if the response is successful
-  if (res.ok) {
-    
-     const responseText = await res.text(); // Get the response text
-setToken(responseText)
-    
-    // You can add code here to handle the token
-  } else {
-    console.log("Error:", res.status);
-    // Handle the error if the response is not successful
-  }
-};
-
-  const addUser = async function () {
-    console.log("add users");
-     const data = {
-    username: 'admin2'
-  }
+  const showUsers = async function () {
 
   // Assuming you have the token stored in a variable called 'token'
 
-    const res = await fetch('http://localhost:5000/api/Chats', {
-     method: 'post',
-      headers: {
-      'Content-Type': 'application/json',
-      'Authorization':  `Bearer ${token}`,
-      },
-          'body': JSON.stringify(data)
-
-  });
-
-  console.log(JSON.stringify(res));
-
-  // You can add code here to handle the response
-};
-
-
-const showUsers = async function () {
-  console.log("show users");
-
-  // Assuming you have the token stored in a variable called 'token'
-
-  const res = await fetch('http://localhost:5000/api/Chats', {
+  const res = await fetch('http://localhost:12345/api/Chats', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -187,7 +54,6 @@ const showUsers = async function () {
 
   if (res.ok) {
     const data = await res.json(); // Extract the JSON data from the response
-    console.log(data); // Log the response data
     setFilteredUsers(data)
     setContacts(data)
   } else {
@@ -195,27 +61,68 @@ const showUsers = async function () {
   }
 
   // You can add code here to handle the response
+  };
+  
+  const getLoggedInUser = function () {
+    if (token) {
+      try {
+        // Decode the JWT to extract its payload
+        const decodedToken = jwtDecode(token);
+        console.log("token is" + token)
+        // Retrieve the username from the decoded token
+        showCurrentUser(decodedToken.UserName);
+
+      } catch (error) {
+        // Handle error if the token is invalid or decoding fails
+        console.error('Error decoding or verifying JWT:', error);
+      }
+    }
+  }
+
+
+const showCurrentUser = async function (getUser) {
+ 
+
+  console.log("username is :" + getUser);
+
+    const res = await fetch(`http://localhost:12345/api/Users/${getUser}`, {
+     method: 'get',
+      headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      },
+
+    });
+       if (res.ok) {
+    const data = await res.json(); // Extract the JSON data from the response
+         setUserNameInfo(data);
+
+    } else {
+    console.log("Error:", res.status); // Log the error status if the response is not successful
+  }
+
+  // You can add code here to handle the response
 };
+  
+   
+useEffect(() => {
+  getLoggedInUser();
+}, [token]);
+
 
   return (
     <>
-      <button onClick={connectFirst}>connectFirst</button>
-            <button onClick={connectSecond}>connectSecond</button>
-            <button onClick={connectThird}>connectThird</button>
-
-      <button onClick={showUsers}>showUsers</button>
-      <button onClick={addUser}>addUser</button>
-
+      
       {/*main card of the app */}
   <div className="card chatbox">
     <div className="card-body">
       {/*upper bar of the chat*/}
       <div className="row top-bar">
         <div className="col-4 d-flex justify-content-start align-items-center chatsBar">
-              <TopButtons showUsers={showUsers} token={token} setQuery={setQuery}  updateList={updateList}  setCurrentUser={setCurrentUser}  currentUser={currentUser} />
+              <TopButtons userNameInfo={userNameInfo} showUsers={showUsers} token={token} setQuery={setQuery} />
           </div>
         <div className="col-8 ">
-              <TopBar activeUserChat={activeUserChat} setmessageQuery={setmessageQuery} currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex}
+              <TopBar  activeUserChat={activeUserChat} setmessageQuery={setmessageQuery} currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex}
                 totalFoundMessages={totalFoundMessages} messageQuery={messageQuery } />
         </div>
       </div>
@@ -237,6 +144,7 @@ const showUsers = async function () {
       </div>
     </div>
   </div>
+     <UserInfo userNameInfo={userNameInfo} />
 
 </>
 

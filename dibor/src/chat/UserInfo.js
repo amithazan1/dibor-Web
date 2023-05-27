@@ -1,6 +1,6 @@
 
 
-function UserInfo({  currentUser }) {
+function UserInfo({  userNameInfo }) {
 
 
   return (
@@ -13,10 +13,10 @@ function UserInfo({  currentUser }) {
   </div>
   <div className="offcanvas-body">
     <div className="d-flex align-items-center mb-3">
-      <img src={currentUser.picture} className="rounded-circle me-3" id="profile-img-showcase" alt="Profile Picture" width={200}/>
+      <img src={userNameInfo?.profilePic} className="rounded-circle me-3" id="profile-img-showcase" alt="Profile Picture" width={200}/>
       <div>
-        <div className="fw-bold">{currentUser.username}</div>
-        <div className="text-muted">{currentUser.display}</div>
+        <div className="fw-bold">{userNameInfo?.username}</div>
+        <div className="text-muted">{userNameInfo?.displayName}</div>
       </div>
     </div>
     <hr className="dropdown-divider" />
@@ -24,15 +24,15 @@ function UserInfo({  currentUser }) {
     <ul className="list-group list-group-flush">
       <li className="list-group-item border-0 p-0">
         <div className="text-muted">Phone</div>
-        <div>{currentUser.phone}</div>
+        <div></div>
       </li>
       <li className="list-group-item border-0 p-0">
         <div className="text-muted">Email</div>
-        <div>{currentUser.email}</div>
+        <div></div>
       </li>
       <li className="list-group-item border-0 p-0">
         <div className="text-muted">Status</div>
-        <div>{currentUser.status}</div>
+        <div></div>
       </li>
     </ul>
   </div>

@@ -4,8 +4,6 @@ function TopBar({ activeUserChat,setmessageQuery,setCurrentMessageIndex ,current
   const searchRef = useRef(null)
 
   const isActive = activeUserChat.user.username === "";
-  console.log("in top bar")
-  console.log(activeUserChat.user.profilePic)
 
   function search() {
     setmessageQuery(searchRef.current.value)
