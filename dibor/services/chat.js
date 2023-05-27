@@ -1,7 +1,17 @@
 const { Chat, SingleUserChat ,Message} = require('../models/chat');
 
 
-const createChat = async (username) => {
+const createChat = async (username,authorization) => {
+
+  const token = authorization.split(" ")[1];
+  try {
+    // Verify the token is valid
+    const data = jwt.verify(token, key);
+    console.log('The logged in user is: ' + data.username);
+    // Token validation was successful. Continue to the actual function (index)
+   } catch (err) {
+    return res.status(401).send("Unauthorized");
+   }
 
   //here i get the user through the token and add it in the users array
   // temp will make it as user admin
@@ -45,15 +55,16 @@ const createChat = async (username) => {
   return chat
 };
 
-const getChats = async () => {
-
-  //here i get the user through the token
-  /*
-   will call it user
-  */
-  // Check the number of chats for the user in the database
- // const chatCount = await Chat.countDocuments();
-  //temp admin
+const getChats = async (authorization) => {
+ const token = authorization.split(" ")[1];
+  try {
+    // Verify the token is valid
+    const data = jwt.verify(token, key);
+    console.log('The logged in user is: ' + data.username);
+    // Token validation was successful. Continue to the actual function (index)
+   } catch (err) {
+    return res.status(401).send("Unauthorized");
+   }
   username = "admin2"
   
    // Find all chats where the given username is in the users array
@@ -71,17 +82,47 @@ const chats = await Chat.find({
    return chatList
 };
 
-const getChatById = async (id) => {
+const getChatById = async (id, authorization) => {
+   const token = authorization.split(" ")[1];
+  try {
+    // Verify the token is valid
+    const data = jwt.verify(token, key);
+    console.log('The logged in user is: ' + data.username);
+    // Token validation was successful. Continue to the actual function (index)
+   } catch (err) {
+    return res.status(401).send("Unauthorized");
+  }
+  
   const chat = await Chat.findOne({ id: id });
   return chat;
 };
 
-const deleteChatById = async (id) => {
+const deleteChatById = async (id, authorization) => {
+   const token = authorization.split(" ")[1];
+  try {
+    // Verify the token is valid
+    const data = jwt.verify(token, key);
+    console.log('The logged in user is: ' + data.username);
+    // Token validation was successful. Continue to the actual function (index)
+   } catch (err) {
+    return res.status(401).send("Unauthorized");
+  }
+  
   const chat = await Chat.deleteOne({ id: id });
   return chat;
 };
 
-const postMessage = async (id, message) => {
+const postMessage = async (id, message, authorization) => {
+   const token = authorization.split(" ")[1];
+  try {
+    // Verify the token is valid
+    const data = jwt.verify(token, key);
+    console.log('The logged in user is: ' + data.username);
+    // Token validation was successful. Continue to the actual function (index)
+   } catch (err) {
+    return res.status(401).send("Unauthorized");
+  }
+  
   const chat = await Chat.findOne({ id: id });
 
     const msg = new Message({
@@ -105,7 +146,17 @@ const postMessage = async (id, message) => {
 
 
 
-const getMessages = async (id) => {
+const getMessages = async (id, authorization) => {
+   const token = authorization.split(" ")[1];
+  try {
+    // Verify the token is valid
+    const data = jwt.verify(token, key);
+    console.log('The logged in user is: ' + data.username);
+    // Token validation was successful. Continue to the actual function (index)
+   } catch (err) {
+    return res.status(401).send("Unauthorized");
+  }
+  
   const chat = await Chat.findOne({ id: id });
   if (chat)
     return chat.messages;

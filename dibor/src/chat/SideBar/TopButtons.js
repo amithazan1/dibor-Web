@@ -1,22 +1,19 @@
 import './SearchBtn.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRef } from 'react';
-import { users } from './users';
 
-import blank_profile_picture from '../blank-profile-picture.svg';
 
 
 //top buttons above the contacts.
-function TopButtons({showUsers, token,setQuery, updateList, setCurrentUser ,currentUser}) {
+function TopButtons({userNameInfo,showUsers, token,setQuery }) {
   
 
   function logOut() {
-    users.splice(0, users.length);
-
-  setCurrentUser({username :undefined})
+    //need to set logout
   }
 
-const [showInput, setShowInput] = useState(false);
+  const [showInput, setShowInput] = useState(false);
+
   const searchBox = useRef(null);
 
   const toggleInput = () => {
@@ -42,12 +39,13 @@ const [showInput, setShowInput] = useState(false);
     setName(event.target.value);
   }
 
-    const addUser = async function (username) {
-     const data = {
+    
+  
+  const addUser = async function (username) {
+            const data = {
     username: username
   }
-
-
+ 
     const res = await fetch('http://localhost:12345/api/Chats', {
      method: 'post',
       headers: {
@@ -58,8 +56,6 @@ const [showInput, setShowInput] = useState(false);
 
     });
        if (res.ok) {
-    const data = await res.json(); // Extract the JSON data from the response
-
          showUsers();
   } else {
     console.log("Error:", res.status); // Log the error status if the response is not successful
@@ -70,13 +66,15 @@ const [showInput, setShowInput] = useState(false);
 };
 
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
     addUser(name);
     setName('');
   }
   
-    
+
+
   return (
     
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -186,9 +184,11 @@ const [showInput, setShowInput] = useState(false);
                 role="button"
                 aria-controls="offcanvasExample"
               >
-        </a>
+                              <img src={userNameInfo?.profilePic}   className="img-fluid rounded-circle"  width={60}  height={60} ></img>
+
+             </a>
         
-             
+
       </div>
                   
                   

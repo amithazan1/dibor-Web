@@ -33,7 +33,7 @@ function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,curre
 
     if (activeChatId != 0) {
   // Assuming you have the token stored in a variable called 'token'
-    const res = await fetch(`http://localhost:5000/api/Chats/${activeChatId}/Messages`, {
+    const res = await fetch(`http://localhost:12345/api/Chats/${activeChatId}/Messages`, {
      method: 'get',
       headers: {
       'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,curre
 
   // Assuming you have the token stored in a variable called 'token'
 
-    const res = await fetch(`http://localhost:5000/api/Chats/${activeChatId}/Messages`, {
+    const res = await fetch(`http://localhost:12345/api/Chats/${activeChatId}/Messages`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
