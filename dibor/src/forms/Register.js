@@ -14,17 +14,15 @@ function Register() {
         username: "",
         password: "",
         confirm: "",
-        display: "",
-        picture: ""
+        displayName: "",
+        profilePic: ""
 
     });
 
- 
-      useEffect(() => {
-    values.picture = picture
 
-    
-  }, [picture]);
+    useEffect(() => {
+        values.profilePic = btoa(picture)
+    }, [picture]);
 
 
     const inputs = [
@@ -34,7 +32,7 @@ function Register() {
             placeholder: "Username",
             type: "text",
             className: "form-control",
-            errorMessage: "filed is mandatory",
+
             required: true
         },
         {
@@ -59,7 +57,7 @@ function Register() {
         },
         {
             id: 4,
-            name: "display",
+            name: "displayName",
             placeholder: "Display name",
             type: "text",
             className: "form-control",
@@ -81,10 +79,14 @@ function Register() {
     ]
 
     const navigate = useNavigate();
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        addUser(values)
-        navigate('/')
+        //adding the user to the users list.
+        let success = await addUser(values);
+        if (!success)
+            alert("username already exists");
+        else
+            navigate('/')
         return;
     }
 
@@ -92,28 +94,28 @@ function Register() {
         setValues({ ...values, [e.target.name]: e.target.value });
     };
 
- 
+
     return (
         <>
-              <div className="logout-container">
-      <div className="logo-container">
-        <Logo />
-      </div>
-      <div className="card" id = "login-card">
-
-            <form onSubmit={handleSubmit}>
-                <div className="title text-center">Fill in the form </div>
-                {inputs.map((input) => (
-                    <Filed key={input.id} {...input} value={values[input.name]} onChange={onChange} />
-                ))}
-                <Picture value={picture} set={setPicture} />
-                <div className="text-center">
-                    have an account?
-                    <Link to="/"> CLICK HERE </Link>
+            <div className="logout-container">
+                <div className="logo-container">
+                    <Logo />
                 </div>
-                <Button name="Submit"></Button>
-            </form>
-            </div>
+                <div className="card" id="login-card">
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="title text-center">Fill in the form </div>
+                        {inputs.map((input) => (
+                            <Filed key={input.id} {...input} value={values[input.name]} onChange={onChange} />
+                        ))}
+                        <Picture value={picture} set={setPicture} />
+                        <div className="text-center">
+                            have an account?
+                            <Link to="/"> CLICK HERE </Link>
+                        </div>
+                        <Button name="Submit"></Button>
+                    </form>
+                </div>
             </div>
 
         </>
