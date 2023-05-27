@@ -6,18 +6,18 @@ import { useState } from "react";
 import './forms/form.css'
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({});
+  const [token, setToken] = useState({});
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login setCurrentUser={setCurrentUser} />} />
+          <Route path="/" element={<Login setToken={setToken} />} />
           <Route path="/Register" Component={Register} />
           <Route
             path="/chat"
             element={
-              currentUser.username !== undefined ? (
-                <Chat setCurrentUser={setCurrentUser} currentUser={currentUser} />
+              token != 0 ? (
+                <Chat setToken={setToken} token={token} />
               ) : (
                 <Navigate to="/" replace />
               )
