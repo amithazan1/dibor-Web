@@ -2,21 +2,20 @@ const users = [];
 
 const addUser = async (values) => {
     const { confirm, ...userValues } = values;
-    const response = await fetch('http://localhost:5000/api/Users', {
+    const response = await fetch('http://localhost:12345/api/Users', {
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ ...userValues })
     });
-
     if (!response.ok)
         return 0;
     return 1;
 };
 
 const login = async (values) => {
-    const response = await fetch('http://localhost:5000/api/Tokens', {
+    const response = await fetch('http://localhost:12345/api/Tokens', {
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
@@ -27,7 +26,7 @@ const login = async (values) => {
     {
         return 0;
     }
-    return response.token;
+    return await response.text();
 
 };
 

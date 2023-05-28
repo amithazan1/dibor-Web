@@ -1,7 +1,7 @@
 import Filed from "./Field";
 import Button from "./Button";
 import Logo from "./Logo";
-import { login, getUser } from "../Database";
+import { login, getUser } from "../APIoperations";
 import './form.css';
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
