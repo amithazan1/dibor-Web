@@ -141,7 +141,7 @@ useEffect(() => {
         </div>
         {/*the chat*/}
         <div className="col-8">
-              <TextBox activeUserChat={activeUserChat} showUsers={showUsers} token={token} activeChatId={activeChatId}  messageQuery={messageQuery} currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex}
+              <TextBox userNameInfo={userNameInfo } activeUserChat={activeUserChat} showUsers={showUsers} token={token} activeChatId={activeChatId}  messageQuery={messageQuery} currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex}
               setTotalFoundMessages={setTotalFoundMessages } />
         </div>
       </div>

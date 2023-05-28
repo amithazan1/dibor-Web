@@ -10,8 +10,7 @@ const createChat = async (username,authorization) => {
     console.log('The logged in user is: ' + data.username);
     // Token validation was successful. Continue to the actual function (index)
    } catch (err) {
-    return res.status(401).send("Unauthorized");
-   }
+return{}   }
 
   //here i get the user through the token and add it in the users array
   // temp will make it as user admin
@@ -63,8 +62,8 @@ const getChats = async (authorization) => {
     console.log('The logged in user is: ' + data.username);
     // Token validation was successful. Continue to the actual function (index)
    } catch (err) {
-    return res.status(401).send("Unauthorized");
-   }
+    return {}
+  }
   username = "admin2"
   
    // Find all chats where the given username is in the users array
@@ -90,7 +89,7 @@ const getChatById = async (id, authorization) => {
     console.log('The logged in user is: ' + data.username);
     // Token validation was successful. Continue to the actual function (index)
    } catch (err) {
-    return res.status(401).send("Unauthorized");
+    return {}
   }
   
   const chat = await Chat.findOne({ id: id });
@@ -105,7 +104,7 @@ const deleteChatById = async (id, authorization) => {
     console.log('The logged in user is: ' + data.username);
     // Token validation was successful. Continue to the actual function (index)
    } catch (err) {
-    return res.status(401).send("Unauthorized");
+    return {}
   }
   
   const chat = await Chat.deleteOne({ id: id });
@@ -120,7 +119,7 @@ const postMessage = async (id, message, authorization) => {
     console.log('The logged in user is: ' + data.username);
     // Token validation was successful. Continue to the actual function (index)
    } catch (err) {
-    return res.status(401).send("Unauthorized");
+    return {}
   }
   
   const chat = await Chat.findOne({ id: id });
@@ -154,7 +153,7 @@ const getMessages = async (id, authorization) => {
     console.log('The logged in user is: ' + data.username);
     // Token validation was successful. Continue to the actual function (index)
    } catch (err) {
-    return res.status(401).send("Unauthorized");
+    return {}
   }
   
   const chat = await Chat.findOne({ id: id });
