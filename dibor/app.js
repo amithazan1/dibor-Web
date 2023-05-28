@@ -42,6 +42,23 @@ io.on("connection", (socket) => {
     socket.on("enterChat", (data) => {
         socket.join(data);
 
+        
+       });
+    
+      socket.on("userRoom", (data) => {
+        socket.join(data);
+        
+       });
+    
+    socket.on("sendMessage", (data) => {
+        console.log(data);
+        socket.to(data.roomChat).emit("recivedMessage",data)
+        socket.to(data.roomUser).emit("recivedMessageAlert",data)
+
+    });
+
+
+
     });
 
     socket.on("sendMessage", (data) => {
@@ -49,6 +66,7 @@ io.on("connection", (socket) => {
         socket.to(data.room).emit("recivedMessage", data)
 
     });
+
 
 
 

@@ -4,7 +4,7 @@ import ChatBubbleRecived from "./ChatBubbleRecived";
 import io from 'socket.io-client';
 const socket = io.connect('http://localhost:3001/');
 //all of the text logic
-function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,currentMessageIndex,setCurrentMessageIndex,setTotalFoundMessages}) {
+function TextBox({userNameInfo,activeUserChat,showUsers,token,activeChatId,messageQuery,currentMessageIndex,setCurrentMessageIndex,setTotalFoundMessages}) {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
 
@@ -12,12 +12,18 @@ function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,curre
 
  const isDisabled = activeChatId === 0
   const [messages, setMessages] = useState([]);
-  const [messagesRecived, setmessagesRecived] = useState([]);
 
    const joinRoom = () => {
     if (activeChatId !== "") {
         console.log("enterd chat"+ activeChatId)
         socket.emit("enterChat", activeChatId)
+      }
+   };
+  
+   const joinUserRoom = () => {
+    if (userNameInfo.username !== undefined) {
+        console.log("enterd chat"+ userNameInfo.username)
+        socket.emit("userRoom", userNameInfo.username)
       }
   };
 
@@ -25,7 +31,11 @@ function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,curre
   useEffect(() => {
       joinRoom();
       getMessages();
-}, [activeChatId]);
+  }, [activeChatId]);
+  
+    useEffect(() => {
+      joinUserRoom();
+}, [userNameInfo]);
 
 
 
@@ -57,6 +67,10 @@ function TextBox({activeUserChat,showUsers,token,activeChatId,messageQuery,curre
       getMessages();
     });
 
+    socket.on('recivedMessageAlert', (data) => {
+      console.log("alertttttttt")
+    });
+
   }, [socket]);
   
  
@@ -86,7 +100,7 @@ const handleSendClick = async () => {
   const newMessage = inputValue.trim();
   if (newMessage !== "") {
     await sendMessage(newMessage); // Wait for sendMessage to complete
-    socket.emit('sendMessage',{message: newMessage,room:activeChatId});
+    socket.emit('sendMessage',{message: newMessage,roomChat:activeChatId,roomUser:activeUserChat.user.username});
     getMessages();
     setInputValue("");
     inputRef.current.focus();
