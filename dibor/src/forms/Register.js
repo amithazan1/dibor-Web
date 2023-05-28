@@ -4,7 +4,7 @@ import Logo from "./Logo";
 import Picture from "./Picture";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { addUser } from "../Database"
+import { addUser } from "../APIoperations"
 import './form.css';
 
 

@@ -11,10 +11,11 @@
     "custom-env": "^2.0.2",
     "express": "^4.18.2",
     "http": "^0.0.1-security",
-    "jwt-decode": "^3.1.2",
     "install": "^0.13.0",
+    "jsonwebtoken": "^9.0.0",
+    "jwt-decode": "^3.1.2",
     "mongodb": "^5.5.0",
-    "mongoose": "^7.2.0",
+    "mongoose": "^7.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
@@ -26,7 +27,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "set NODE_ENV=test && node app.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
