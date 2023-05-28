@@ -6,7 +6,8 @@ import { useState } from "react";
 import './forms/form.css'
 
 function App() {
-  const [token, setToken] = useState({});
+  const [token, setToken] = useState("");
+  console.log(token)
   return (
     <>
       <BrowserRouter>
