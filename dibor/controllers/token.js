@@ -10,7 +10,7 @@ const login = async (req, res) => {
         const data = { username: req.body.username }
         const token = jwt.sign(data, key)
         // Return the token to the browser
-        res.status(201).json({ token });
+        res.status(201).send(token);
     }
     else
         res.status(404).json({ errors: ['wrong username or password'] });
