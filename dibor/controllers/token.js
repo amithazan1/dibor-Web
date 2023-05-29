@@ -7,7 +7,7 @@ const login = async (req, res) => {
     const userExist = await tokenService.login(req.body.username, req.body.password);
     if (userExist) {
         // Generate the token.
-        const data = { username: req.body.username }
+        const data = { UserName: req.body.username }
         const token = jwt.sign(data, key)
         // Return the token to the browser
         res.status(201).send(token);
