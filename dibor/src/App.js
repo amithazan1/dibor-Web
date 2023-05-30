@@ -4,6 +4,8 @@ import Register from "./forms/Register";
 import Chat from "./chat/Chat";
 import { useState } from "react";
 import './forms/form.css'
+import io from 'socket.io-client';
+const socket = io.connect('http://localhost:3001/');
 
 function App() {
   const [token, setToken] = useState("");
@@ -18,7 +20,7 @@ function App() {
             path="/chat"
             element={
               token != 0 ? (
-                <Chat setToken={setToken} token={token} />
+                <Chat socket={socket} setToken={setToken} token={token} />
               ) : (
                 <Navigate to="/" replace />
               )

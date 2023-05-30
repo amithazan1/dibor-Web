@@ -39,24 +39,77 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log(`user connected: ${socket.id}`);
 
-    socket.on("enterChat", (data) => {
-        socket.join(data);
+// Create an object to store the active chat rooms and the users who have joined each room
+const activeChatRooms = {};
 
-        
-    });
+socket.on("enterChat", (data) => {
+  const roomId = data;
+  const userId = socket.id;
+
+  // Check if the room exists in the activeChatRooms object
+  if (activeChatRooms[roomId]) {
+    // Check if the user has already joined the room
+    if (activeChatRooms[roomId].includes(userId)) {
+      console.log("User already joined the room");
+      return;
+    }
+
+    // Add the user to the room's user list
+    activeChatRooms[roomId].push(userId);
+  } else {
+    // Create a new room and add the user to the user list
+    activeChatRooms[roomId] = [userId];
+  }
+
+  // Join the room
+  socket.join(roomId);
+
+  console.log("User joined the room: " + roomId);
+});
     
-    socket.on("userRoom", (data) => {
-        socket.join(data);
-        
+     socket.on("enterUserChat", (data) => {
+         const roomId = data;
+  const userId = socket.id;
+
+  // Check if the room exists in the activeChatRooms object
+  if (activeChatRooms[roomId]) {
+    // Check if the user has already joined the room
+    if (activeChatRooms[roomId].includes(userId)) {
+      console.log("User already joined the room");
+      return;
+    }
+
+    // Add the user to the room's user list
+    activeChatRooms[roomId].push(userId);
+  } else {
+    // Create a new room and add the user to the user list
+    activeChatRooms[roomId] = [userId];
+  }
+
+  // Join the room
+  socket.join(roomId);
+
+  console.log("User joined the room: " + roomId);
     });
-    
+
+ 
     socket.on("sendMessage", (data) => {
         console.log(data);
-        socket.to(data.roomChat).emit("recivedMessage", data)
-        socket.to(data.roomUser).emit("recivedMessageAlert", data)
-
+        socket.to(data.chatRoom).emit("recivedMessage", data.chatRoom)
+        socket.to(data.userRoom).emit("recivedMessageAlert", {from: data.userRoom,message: data.message ,time:data.time})
     });
+     socket.on('disconnect', () => {
+    const rooms = Object.keys(socket.rooms);
+    rooms.forEach((room) => {
+      if (room !== socket.id) {
+        socket.leave(room);
+        console.log(`User left room: ${room}`);
+      }
+    });
+  });
+    
 });
+
 
 
 

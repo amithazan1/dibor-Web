@@ -2,6 +2,7 @@ import React from "react";
 
 function SidebarItem({ chat, setActiveChatId, isActive }) {
   const handleClick = () => {
+    console.log("setting" + chat.id)
     setActiveChatId(chat.id);
   };
 

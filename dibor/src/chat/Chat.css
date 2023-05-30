@@ -1,7 +1,9 @@
 
 
 #root {
-  width: 80%;
+  width: 100%;
+    height: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -101,13 +103,35 @@
 }
 
 
+#toast-container {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 100;
+  
+}
+.toast-body {
+    
+   color: black;
+}
 
+.toast-header {
+    size: 100%;
+width: 100%;
+}
 
 
 .btn-group {
   float: right;
   padding-bottom: 10px;
   
+}
+
+.toast:not(.show) {
+    display: flex;
 }
 
 .btn-text {
@@ -120,7 +144,7 @@
 */
 
 .chatbox {
-  width: 100%;
+  width: 80%;
   background-color: rgb(224, 239, 253);
   display: flex;
   flex-direction: column; /* set flex direction to column */
@@ -185,6 +209,7 @@ height: calc(80vh + 60px);
 
 .msg-bar {
  padding-left: 3px;
+ display: flex;
 }
 
 .top-bar {
@@ -285,6 +310,7 @@ height: calc(80vh + 60px);
     padding: 5px;
 }
 
+
 .chatsBar{
     border: 0;
     border-right-width: 2px;
@@ -304,8 +330,43 @@ height: calc(80vh + 60px);
         
 }
  
+.valid {
+    color: #47d47d;
+}
 
+.invalid {
+color: red;
+}
 .selected {
           color: black;
 
+}
+
+.notification{
+  padding: 0;
+  margin: 0;
+  padding-left: 5px;
+  float: right;
+}
+
+
+.logoNotification{
+    height: 40px;
+padding: 0;
+margin: 0;
+padding-left: 10px;
+padding-right: 5px;
+position: relative;
+}
+
+.toast-header .time {
+  margin-left: auto;
+  float: right;
+}
+
+.toast-header .textNotification {
+  margin: 0;
+  float: left;
+  font-weight: bold;
+  color: black;
 }

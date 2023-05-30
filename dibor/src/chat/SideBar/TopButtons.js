@@ -15,6 +15,8 @@ function TopButtons({setToken,userNameInfo,showUsers, token,setQuery }) {
   const [showInput, setShowInput] = useState(false);
 
   const searchBox = useRef(null);
+  const userRef = useRef(null);
+  const [error, setError] = useState("");
 
   const toggleInput = () => {
     setShowInput(!showInput);
@@ -40,7 +42,7 @@ function TopButtons({setToken,userNameInfo,showUsers, token,setQuery }) {
   }
 
     
-  
+
   const addUser = async function (username) {
             const data = {
     username: username
@@ -55,9 +57,16 @@ function TopButtons({setToken,userNameInfo,showUsers, token,setQuery }) {
           'body': JSON.stringify(data)
 
     });
-       if (res.ok) {
+    if (res.ok) {
+          const temp = userRef.current; // corresponding DOM node
+      temp.className = "valid";
+      setError("user added successfully!")
          showUsers();
-  } else {
+    } else {
+  const temp = userRef.current; // corresponding DOM node
+      temp.className = "invalid";
+              setError("user was not found!")
+
     console.log("Error:", res.status); // Log the error status if the response is not successful
   }
 
@@ -65,7 +74,9 @@ function TopButtons({setToken,userNameInfo,showUsers, token,setQuery }) {
   // You can add code here to handle the response
 };
 
-
+  const clearError = () => {
+    setError(" ")
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -134,7 +145,7 @@ function TopButtons({setToken,userNameInfo,showUsers, token,setQuery }) {
                 </svg>
                 <span className="visually-hidden">Button</span>
               </button>
-                 <div className="modal fade" id="addContact" tabIndex="-1" aria-labelledby="addContactLabel" aria-hidden="true">
+                 <div className="modal fade" onBlur={clearError} id="addContact" tabIndex="-1" aria-labelledby="addContactLabel" aria-hidden="true">
       <div className="modal-dialog">
         <div className="modal-content">
           <form onSubmit={handleSubmit}>
@@ -145,11 +156,12 @@ function TopButtons({setToken,userNameInfo,showUsers, token,setQuery }) {
             <div className="modal-body">
               <div className="mb-3">
                 <label htmlFor="contactName" className="form-label">Name</label>
-                <input type="text" className="form-control" id="contactName" value={name} onChange={handleNameChange} required />
+                    <input type="text" className="form-control" id="contactName" value={name} onChange={handleNameChange} required />
+                    <div ref={userRef} >{error}</div>
               </div>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" id = "close-btn" data-bs-dismiss="modal">Close</button>
+<button type="button" className="btn btn-secondary" onClick={clearError} id="close-btn" data-bs-dismiss="modal">Close</button>
               <button type="submit" className="btn" id ="add-btn">Add</button>
             </div>
           </form>
@@ -184,7 +196,7 @@ function TopButtons({setToken,userNameInfo,showUsers, token,setQuery }) {
                 role="button"
                 aria-controls="offcanvasExample"
               >
-                              <img src={userNameInfo?.profilePic}   className="img-fluid rounded-circle"  width={60}  height={60} ></img>
+                              <img src={userNameInfo.profilePic}   className="img-fluid rounded-circle"  width={60}  height={60} ></img>
 
              </a>
         

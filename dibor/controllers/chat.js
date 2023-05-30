@@ -1,7 +1,13 @@
 const chatService = require('../services/chat');
 const createChat = async (req, res) => {
     console.log("trying to create");
-res.json(await chatService.createChat(req.body.username,req.headers.authorization));
+    const user = await chatService.createChat(req.body.username, req.headers.authorization);
+    if (user === -1) {
+        console.log("return error");
+        return res.status(409).json({ errors: ['authorization error'] })
+    } else {
+        res.json(user);
+    }
 };
 
 const getChats = async (req, res) => {
