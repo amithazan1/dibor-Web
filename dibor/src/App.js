@@ -9,7 +9,6 @@ const socket = io.connect('http://localhost:3001/');
 
 function App() {
   const [token, setToken] = useState("");
-  console.log(token)
   return (
     <>
       <BrowserRouter>

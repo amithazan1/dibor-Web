@@ -13,9 +13,13 @@
   flex-wrap: nowrap;
 
 }
+.navbar{
+  flex-wrap: inherit;
+}
 
 .search-input{
   width: 80%;
+  border-radius: 5px;
 }
 
 .btn:hover {
@@ -50,6 +54,7 @@
   padding-inline-start: 40%;
   font-size: xx-large;
 }
+
 
 
 .card-body {
@@ -150,6 +155,7 @@ width: 100%;
   flex-direction: column; /* set flex direction to column */
   padding: 0;
   margin: 0;
+  border-radius: 10px;
 }
 
 .side-bar {
@@ -178,17 +184,18 @@ height: calc(80vh + 60px);
 /* width and color */
 ::-webkit-scrollbar {
   width: 10px;
-  background-color: #F5F5F5;
+  background-color:  rgb(224, 239, 253);
 }
 
 /* handle */
 ::-webkit-scrollbar-thumb {
-  background-color: #c0bfbd;
+  background-color: #98c3c8;
+  border-radius: 20px;
 }
 
 /* handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #9e9e9c;
+  background-color: #79c5de;
 }
 
 .list-group-item.active {
@@ -198,7 +205,9 @@ height: calc(80vh + 60px);
     border-color: #b9d3fa;
 }
 
-
+.search:disabled{
+  visibility:hidden;
+}
 
 .list-group-item {
   padding: 20%;
@@ -210,6 +219,7 @@ height: calc(80vh + 60px);
 .msg-bar {
  padding-left: 3px;
  display: flex;
+ flex-wrap: initial;
 }
 
 .top-bar {
@@ -235,7 +245,9 @@ height: calc(80vh + 60px);
 
 }
 
-
+.sendMsg{
+flex-wrap: inherit;
+}
 
 #send-btn{
     background-color:rgb(224, 239, 253)
@@ -319,6 +331,13 @@ height: calc(80vh + 60px);
     border-style:ridge;
 }
 
+#message-input {
+  border-radius: 5px;
+  width: 90%;
+  margin-left: 10px;
+}
+
+
 .unreadMessages{
         font-size: 0.95em;
         background-color: #75aaf7;
@@ -338,8 +357,7 @@ height: calc(80vh + 60px);
 color: red;
 }
 .selected {
-          color: black;
-
+ color: black;          
 }
 
 .notification{
@@ -347,6 +365,17 @@ color: red;
   margin: 0;
   padding-left: 5px;
   float: right;
+}
+
+.deleteButton {
+  padding: 0;
+  margin: 0;
+  padding-left: 10px;
+  padding-right: 5px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: 0;
 }
 
 

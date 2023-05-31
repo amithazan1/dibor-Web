@@ -9,12 +9,11 @@ function TextBox({socket,activeUserChat,showUsers,token,activeChatId,messageQuer
 
   const chatRef = useRef(null);
 
- const isDisabled = (activeChatId === 0)
+ const isDisabled = (activeChatId === 0 || activeUserChat.user == null)
   const [messages, setMessages] = useState([]);
 
    const joinRoom = () => {
     if (!isDisabled) {
-        console.log("enterd chat"+ activeChatId)
         socket.emit("enterChat", activeChatId)
       }
    };
@@ -23,7 +22,6 @@ function TextBox({socket,activeUserChat,showUsers,token,activeChatId,messageQuer
 
 
   const getMessages = async function () {
-    console.log("activeChatId: "+ activeChatId)
     if (activeChatId != 0) {
   // Assuming you have the token stored in a variable called 'token'
     const res = await fetch(`http://localhost:12345/api/Chats/${activeChatId}/Messages`, {
@@ -52,8 +50,6 @@ function TextBox({socket,activeUserChat,showUsers,token,activeChatId,messageQuer
 
   useEffect(() => {
     const handleReceivedMessage = (data) => {
-      console.log("activeChatId" + activeChatId);
-      console.log("message received from" + data);
       getMessages();
     };
 

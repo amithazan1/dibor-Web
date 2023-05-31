@@ -4,18 +4,10 @@ const {getUserByUsername} = require('../services/form');
 const { key } = require("../controllers/token");
 const jwt = require("jsonwebtoken")
 const createChat = async (username, authorization) => {
-          console.log("creating");
 
   const token = authorization.split(" ")[1];
   let data;
   try {
-    // Verify the token is valid
-                console.log("the key ");
-
-            console.log(key);
-
-
-
     data = jwt.verify(token, key);
 
     // Token validation was successful. Continue to the actual function (index)
@@ -24,16 +16,19 @@ const createChat = async (username, authorization) => {
     return -1
   }
 
+  if (data.UserName === username) {
+    return -3;
+  }
   //here i get the user through the token and add it in the users array
   // temp will make it as user admin
     const chatCount = await Chat.countDocuments();
   const creatingUser = await getUserByUsername(data.UserName);
   const otherUser = await getUserByUsername(username);
-  console.log(otherUser);
   if (otherUser == null || otherUser.length == 0) {
-        return -1
+        return -2
   }
   
+
 
   const chatSave = new Chat({
     id: chatCount + 1,
@@ -82,7 +77,7 @@ const getChats = async (authorization) => {
      data = jwt.verify(token, key);
     // Token validation was successful. Continue to the actual function (index)
    } catch (err) {
-    return {}
+    return -1
   }
   
    // Find all chats where the given username is in the users array
@@ -109,10 +104,11 @@ const getChatById = async (id, authorization) => {
      data = jwt.verify(token, key);
     // Token validation was successful. Continue to the actual function (index)
    } catch (err) {
-    return {}
+    return -1
   }
   
   const chat = await Chat.findOne({ id: id });
+  
   return chat;
 };
 
@@ -125,10 +121,9 @@ const deleteChatById = async (id, authorization) => {
      data = jwt.verify(token, key);
     // Token validation was successful. Continue to the actual function (index)
    } catch (err) {
-    return {}
+    return -1
   }
-  
-  const chat = await Chat.deleteOne({ id: id });
+  const chat = await Chat.deleteOne({ id: id ,'users.username': data.UserName});
   return chat;
 };
 
@@ -141,12 +136,14 @@ const postMessage = async (id, message, authorization) => {
      data = jwt.verify(token, key);
     // Token validation was successful. Continue to the actual function (index)
    } catch (err) {
-    return {}
+    return -1;
   }
     const senderUser = await getUserByUsername(data.UserName);
 
   const chat = await Chat.findOne({ id: id });
-
+    if (chat == null) {
+    return -1;
+    }
     const msg = new Message({
      id: chat.messages.length + 1,
     created: new Date(),
@@ -175,17 +172,16 @@ const getMessages = async (id, authorization) => {
   try {
     // Verify the token is valid
      data = jwt.verify(token, key);
-    console.log('The logged in user is: ' + data.UserName);
     // Token validation was successful. Continue to the actual function (index)
    } catch (err) {
-    return {}
+    return -1
   }
   
   const chat = await Chat.findOne({ id: id });
   if (chat)
     return chat.messages;
   else
-    return ""
+    return -1
 };
 
 

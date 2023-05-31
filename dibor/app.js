@@ -37,7 +37,6 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-    console.log(`user connected: ${socket.id}`);
 
 // Create an object to store the active chat rooms and the users who have joined each room
 const activeChatRooms = {};
@@ -50,7 +49,6 @@ socket.on("enterChat", (data) => {
   if (activeChatRooms[roomId]) {
     // Check if the user has already joined the room
     if (activeChatRooms[roomId].includes(userId)) {
-      console.log("User already joined the room");
       return;
     }
 
@@ -64,7 +62,6 @@ socket.on("enterChat", (data) => {
   // Join the room
   socket.join(roomId);
 
-  console.log("User joined the room: " + roomId);
 });
     
      socket.on("enterUserChat", (data) => {
@@ -75,7 +72,6 @@ socket.on("enterChat", (data) => {
   if (activeChatRooms[roomId]) {
     // Check if the user has already joined the room
     if (activeChatRooms[roomId].includes(userId)) {
-      console.log("User already joined the room");
       return;
     }
 
@@ -89,21 +85,22 @@ socket.on("enterChat", (data) => {
   // Join the room
   socket.join(roomId);
 
-  console.log("User joined the room: " + roomId);
     });
 
  
     socket.on("sendMessage", (data) => {
-        console.log(data);
         socket.to(data.chatRoom).emit("recivedMessage", data.chatRoom)
         socket.to(data.userRoom).emit("recivedMessageAlert", {from: data.userRoom,message: data.message ,time:data.time})
+    });
+  
+   socket.on("deleteUserChat", (data) => {
+        socket.to(data.username).emit("deleteChat", data)
     });
      socket.on('disconnect', () => {
     const rooms = Object.keys(socket.rooms);
     rooms.forEach((room) => {
       if (room !== socket.id) {
         socket.leave(room);
-        console.log(`User left room: ${room}`);
       }
     });
   });

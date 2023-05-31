@@ -65,12 +65,15 @@ function TopButtons({setToken,userNameInfo,showUsers, token,setQuery }) {
     } else {
   const temp = userRef.current; // corresponding DOM node
       temp.className = "invalid";
-              setError("user was not found!")
+      if (username === userNameInfo.username) {
+        setError("you don't need us to talk to yourself")
 
-    console.log("Error:", res.status); // Log the error status if the response is not successful
-  }
+      } else {
+        setError("user was not found!")
+      }
 
-
+    }
+    
   // You can add code here to handle the response
 };
 

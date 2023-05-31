@@ -56,7 +56,6 @@ const userExists = (username, password) => {
 const getUser = (username) => {
 
     for (const i in users) {
-        console.log(users[i])
         const user = users[i]
         if (username === user.username) {
             return user

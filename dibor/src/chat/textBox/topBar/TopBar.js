@@ -74,7 +74,7 @@ function TopBar({ activeUserChat,setmessageQuery,setCurrentMessageIndex ,current
         <div className="input-group searchChat">
           <input
             type="text"
-            className="form-control"
+            className="form-control search"
             placeholder="search in chat"
             aria-label="Type your message here"
             aria-describedby="button-addon2"
