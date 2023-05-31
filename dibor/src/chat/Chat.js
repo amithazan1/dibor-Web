@@ -31,7 +31,6 @@ function Chat({socket, setToken, token }) {
   const [filteredUsers, setFilteredUsers] = useState(contacts);
   //find the active user in database
 const activeUserChat = contacts.find(chat => chat.id === activeChatId) || { user: { username: '', displayName: '' } };
-console.log(activeChatId)
 
     const [userNameInfo, setUserNameInfo] = useState({username:"",displayName:"",profilePic:""});
 
@@ -60,15 +59,12 @@ console.log(activeChatId)
     const data = await res.json(); // Extract the JSON data from the response
     setFilteredUsers(data)
     setContacts(data)
-  } else {
-    console.log("Error:", res.status); // Log the error status if the response is not successful
-  }
+  } 
 
   // You can add code here to handle the response
   };
   
      const joinUserRoom = (username) => {
-        console.log("enterd user room "+ username)
         socket.emit("enterUserChat", username)
    };
   
@@ -76,7 +72,6 @@ console.log(activeChatId)
 const showCurrentUser = async function (getUser) {
  
 
-  console.log("username is :" + getUser);
 
     const res = await fetch(`http://localhost:12345/api/Users/${getUser}`, {
      method: 'get',
@@ -88,30 +83,42 @@ const showCurrentUser = async function (getUser) {
     });
        if (res.ok) {
          const data = await res.json(); // Extract the JSON data from the response
-         console.log(data[0])
          const user   = { username: data[0].username, displayName: data[0].displayName, profilePic: data[0].profilePic };
          setUserNameInfo(user);
-               console.log(user)
-         console.log(userNameInfo)
          joinUserRoom( data[0].username);
 
 
-    } else {
-    console.log("Error:", res.status); // Log the error status if the response is not successful
-  }
+    } 
+
+  // You can add code here to handle the response
+};
+  
+  const deleteContact = async function (id) {
+ 
+
+
+    const res = await fetch(`http://localhost:12345/api/Chats/${id}`, {
+     method: 'delete',
+      headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      },
+
+    });
+       if (res.ok) {
+         await showUsers();
+    } 
 
   // You can add code here to handle the response
 };
   
   
   const getLoggedInUser = async function () {
-            console.log("token is" + token)
 
     if (token) {
       try {
         // Decode the JWT to extract its payload
         const decodedToken = jwtDecode(token);
-        console.log("token is" + token)
         // Retrieve the username from the decoded token
         await showCurrentUser(decodedToken.UserName);
       } catch (error) {
@@ -156,7 +163,33 @@ useEffect(() => {
     getLoggedInUser();
         showUsers();
 
-}, [token]);
+  }, [token]);
+  
+
+    useEffect(() => {
+      const handleDelete = (data) => {
+        showUsers();
+
+        const notifiy = { from: data.username, message: "deleted chat", time: data.time };
+        
+        if (activeChatId === data.chatId) {
+          setActiveChatId(0);
+        }
+      setNotification(notification => [...notification,notifiy])
+      
+    setTimeout(() => {
+      removeNotification(notifiy);
+    }, 3000);
+    };
+
+      socket.on('deleteChat', handleDelete);
+      
+
+    return () => {
+      socket.off('deleteChat', handleDelete);
+    };
+  }, [socket]);
+
 
   return (
     <>
@@ -180,7 +213,7 @@ useEffect(() => {
           {/* Sidebar */}
              <div className="list-group list-group-flush border-bottom side-bar">
             <div className="scrollarea">
-                  <UserList token={token} chats={filteredUsers} setActiveChatId={setActiveChatId} activeChatId={activeChatId} />
+                  <UserList socket={socket} deleteContact={deleteContact} token={token} chats={filteredUsers} setActiveChatId={setActiveChatId} activeChatId={activeChatId} />
               {/* add more list items here */}
             </div>
           </div>
