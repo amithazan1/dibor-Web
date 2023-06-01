@@ -30,6 +30,8 @@
 <li>cd to the dibor folder</li>
   </ul><ul>
 <li>install express with the command 'npm i express</li>
+    </ul><ul>
+<li>make sure mongodb is installed and the mongo service is running</li>
 </ul><ul>
 <li>run the server with the command 'node app.js'</li>
 </ul><ul>
