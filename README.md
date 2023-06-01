@@ -35,7 +35,7 @@
 </ul><ul>
 <li>in your browser go to http://localhost:12345/</li>
 </ul><ul>
-<li>note that the dataBase will run at the default mongodb port in directory named dibor: mongodb://localhost:27017/dibor. the Socket.IO server will run at port 3001</li>
+<li>note that the dataBase will run at the default mongodb port in a folder named dibor: mongodb://localhost:27017/dibor. the Socket.IO server will run at port 3001</li>
   
   </ul><h2>Features in chat</h2>
 <hr><ul>
