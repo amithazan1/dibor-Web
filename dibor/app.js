@@ -14,10 +14,9 @@ mongoose.connect(process.env.CONNECTION_STRING,
         useUnifiedTopology: true
     });
 
-/*    build of the app will be in the public
-app.use(express.static('public'))
-*/
+
 var app = express();
+app.use(express.static('public'))
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
@@ -25,13 +24,18 @@ app.use('/api/Chats', chat);
 app.use('/api/Users', user);
 app.use('/api/Tokens', token);
 
+app.get('*', (req, res) => {
+  // Redirect to the home page or any other desired URL
+  res.redirect('/');
+});
+
 //socket io
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "http://localhost:12345",
         methods: ["GET", "POST"],
     },
 });
@@ -90,7 +94,7 @@ socket.on("enterChat", (data) => {
  
     socket.on("sendMessage", (data) => {
         socket.to(data.chatRoom).emit("recivedMessage", data.chatRoom)
-        socket.to(data.userRoom).emit("recivedMessageAlert", {from: data.userRoom,message: data.message ,time:data.time})
+        socket.to(data.userRoom).emit("recivedMessageAlert", {from: data.from,message: data.message ,time:data.time})
     });
   
    socket.on("deleteUserChat", (data) => {

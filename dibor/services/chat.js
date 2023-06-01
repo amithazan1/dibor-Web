@@ -1,30 +1,22 @@
 const { Chat, SingleUserChat ,Message} = require('../models/chat');
 const {getUserByUsername} = require('../services/form');
-
-const { key } = require("../controllers/token");
+const { key } = require('../controllers/authorization');
 const jwt = require("jsonwebtoken")
-const createChat = async (username, authorization) => {
+const createChat = async (username,currentUser) => {
 
-  const token = authorization.split(" ")[1];
-  let data;
-  try {
-    data = jwt.verify(token, key);
 
-    // Token validation was successful. Continue to the actual function (index)
-  } catch (err) {
-    
-    return -1
-  }
-
-  if (data.UserName === username) {
-    return -3;
-  }
   //here i get the user through the token and add it in the users array
   // temp will make it as user admin
+
+
+    if (currentUser === username) {
+    return -3;
+    }
+  
     const chatCount = await Chat.countDocuments();
-  const creatingUser = await getUserByUsername(data.UserName);
+  const creatingUser = await getUserByUsername(currentUser);
   const otherUser = await getUserByUsername(username);
-  if (otherUser == null || otherUser.length == 0) {
+  if (otherUser === -1) {
         return -2
   }
   
@@ -34,15 +26,15 @@ const createChat = async (username, authorization) => {
     id: chatCount + 1,
     users: [
       {
-          username: creatingUser[0].username,
-          displayName: creatingUser[0].displayName,
-          profilePic: creatingUser[0].profilePic,
+          username: creatingUser.username,
+          displayName: creatingUser.displayName,
+          profilePic: creatingUser.profilePic,
         
       },
       {
-          username: otherUser[0].username,
-          displayName: otherUser[0].displayName,
-          profilePic: otherUser[0].profilePic,
+          username: otherUser.username,
+          displayName: otherUser.displayName,
+          profilePic: otherUser.profilePic,
         
       },
 
@@ -57,9 +49,9 @@ const createChat = async (username, authorization) => {
   const chat = new SingleUserChat({
        id: chatCount + 1,
         user: {
-          username: otherUser[0].username,
-          displayName: otherUser[0].displayName,
-          profilePic: otherUser[0].profilePic,
+          username: otherUser.username,
+          displayName: otherUser.displayName,
+          profilePic: otherUser.profilePic,
         },
     
        messages: [],
@@ -68,77 +60,40 @@ const createChat = async (username, authorization) => {
   return chat
 };
 
-const getChats = async (authorization) => {
-    let data;
+const getChats = async (currentUser) => {
 
- const token = authorization.split(" ")[1];
-  try {
-    // Verify the token is valid
-     data = jwt.verify(token, key);
-    // Token validation was successful. Continue to the actual function (index)
-   } catch (err) {
-    return -1
-  }
-  
    // Find all chats where the given username is in the users array
 const chats = await Chat.find({
-  'users.username': data.UserName
+  'users.username': currentUser
 });
 
     // Map the chats to the desired format
     const chatList = chats.map((chat) => ({
       id: chat.id,
-      user: getOtherUser(chat.users, data.UserName),
+      user: getOtherUser(chat.users,currentUser),
       lastMessage: getLastMessage(chat.messages),
     }));
 
    return chatList
 };
 
-const getChatById = async (id, authorization) => {
-  const token = authorization.split(" ")[1];
-    let data;
-
-  try {
-    // Verify the token is valid
-     data = jwt.verify(token, key);
-    // Token validation was successful. Continue to the actual function (index)
-   } catch (err) {
-    return -1
-  }
+const getChatById = async (id) => {
+ 
   
   const chat = await Chat.findOne({ id: id });
   
   return chat;
 };
 
-const deleteChatById = async (id, authorization) => {
-    let data;
+const deleteChatById = async (id, currentUser) => {
 
-   const token = authorization.split(" ")[1];
-  try {
-    // Verify the token is valid
-     data = jwt.verify(token, key);
-    // Token validation was successful. Continue to the actual function (index)
-   } catch (err) {
-    return -1
-  }
-  const chat = await Chat.deleteOne({ id: id ,'users.username': data.UserName});
+  const chat = await Chat.deleteOne({ id: id ,'users.username': currentUser});
   return chat;
 };
 
-const postMessage = async (id, message, authorization) => {
-  const token = authorization.split(" ")[1];
-    let data;
-
-  try {
-    // Verify the token is valid
-     data = jwt.verify(token, key);
-    // Token validation was successful. Continue to the actual function (index)
-   } catch (err) {
-    return -1;
-  }
-    const senderUser = await getUserByUsername(data.UserName);
+const postMessage = async (id, message, currentUser) => {
+  
+    const senderUser = await getUserByUsername(currentUser);
 
   const chat = await Chat.findOne({ id: id });
     if (chat == null) {
@@ -148,9 +103,9 @@ const postMessage = async (id, message, authorization) => {
      id: chat.messages.length + 1,
     created: new Date(),
     sender: {
-      username: senderUser[0].username,
-      displayName: senderUser[0].displayName,
-      profilePic: senderUser[0].profilePic,
+      username: senderUser.username,
+      displayName: senderUser.displayName,
+      profilePic: senderUser.profilePic,
     },
     content: message,
   
@@ -165,18 +120,8 @@ const postMessage = async (id, message, authorization) => {
 
 
 
-const getMessages = async (id, authorization) => {
-    let data;
-
-   const token = authorization.split(" ")[1];
-  try {
-    // Verify the token is valid
-     data = jwt.verify(token, key);
-    // Token validation was successful. Continue to the actual function (index)
-   } catch (err) {
-    return -1
-  }
-  
+const getMessages = async (id) => {
+   
   const chat = await Chat.findOne({ id: id });
   if (chat)
     return chat.messages;

@@ -1,17 +1,18 @@
 const express = require('express');
 var router = express.Router();
 const chatController = require('../controllers/chat');
+const authorization = require('../controllers/authorization');
 
 router.route('/')
-.post(chatController.createChat)
-.get(chatController.getChats);
+.post(authorization.verifyToken,chatController.createChat)
+.get(authorization.verifyToken,chatController.getChats);
 
 router.route('/:id')
-    .get(chatController.getChatById)
-    .delete(chatController.deleteChatById);
+    .get(authorization.verifyToken,chatController.getChatById)
+    .delete(authorization.verifyToken,chatController.deleteChatById);
 
 router.route('/:id/Messages')
-    .post(chatController.postMessage)
-    .get(chatController.getMessages);
+    .post(authorization.verifyToken,chatController.postMessage)
+    .get(authorization.verifyToken,chatController.getMessages);
 
 module.exports = router;

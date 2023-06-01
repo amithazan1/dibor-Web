@@ -15,7 +15,7 @@ const verifyToken = (req, res, next) => {
         }
 
         // Attach the decoded user information to the request object
-        req.user = decoded;
+        req.username = decoded.UserName;
         return next();
     });
 };
