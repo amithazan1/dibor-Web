@@ -43,4 +43,4 @@
 </ul><ul>
 <li>Search messages and scroll between them.</li>
 </ul><h2>Project Status</h2>
-<hr><p>in projgress</p>
+<hr><p>in progress</p>
