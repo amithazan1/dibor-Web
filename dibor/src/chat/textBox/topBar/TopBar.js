@@ -18,7 +18,7 @@ function TopBar({ activeUserChat,setmessageQuery,setCurrentMessageIndex ,current
             alt="Your Image"
           />
         )}
-        <strong className="contactName">{activeUserChat.user.username}</strong>
+        <strong className="contactName">{activeUserChat.user.displayName}</strong>
 
         {totalFoundMessages === 0 && messageQuery !== '' && (
           <>

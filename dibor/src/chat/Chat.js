@@ -30,7 +30,7 @@ function Chat({socket, setToken, token }) {
   const [contacts, setContacts] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState(contacts);
   //find the active user in database
-const activeUserChat = contacts.find(chat => chat.id === activeChatId) || { user: { username: '', displayName: '' } };
+  const activeUserChat = contacts.find(chat => chat.id === activeChatId) || { user: { username: '', displayName: '' } };
 
     const [userNameInfo, setUserNameInfo] = useState({username:"",displayName:"",profilePic:""});
 
@@ -83,11 +83,9 @@ const showCurrentUser = async function (getUser) {
     });
        if (res.ok) {
          const data = await res.json(); // Extract the JSON data from the response
-         const user   = { username: data[0].username, displayName: data[0].displayName, profilePic: data[0].profilePic };
+         const user   = { username: data.username, displayName: data.displayName, profilePic: data.profilePic };
          setUserNameInfo(user);
-         joinUserRoom( data[0].username);
-
-
+         joinUserRoom( data.username);
     } 
 
   // You can add code here to handle the response
@@ -220,7 +218,7 @@ useEffect(() => {
         </div>
         {/*the chat*/}
         <div className="col-8">
-              <TextBox socket={socket } activeUserChat={activeUserChat} showUsers={showUsers} token={token} activeChatId={activeChatId}  messageQuery={messageQuery} currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex}
+              <TextBox userNameInfo={userNameInfo} socket={socket } activeUserChat={activeUserChat} showUsers={showUsers} token={token} activeChatId={activeChatId}  messageQuery={messageQuery} currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex}
               setTotalFoundMessages={setTotalFoundMessages } />
         </div>
       </div>

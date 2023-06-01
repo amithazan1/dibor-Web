@@ -59,6 +59,8 @@ const getUser = (username) => {
         if (username === user.username) {
             return user
         }
+    }
+}
 
   /*
 const getUser = async (username, token) => {

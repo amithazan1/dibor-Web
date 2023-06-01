@@ -3,7 +3,7 @@ import ChatBubbleSent from './ChatBubbleSent'
 import ChatBubbleRecived from "./ChatBubbleRecived";
 
 //all of the text logic
-function TextBox({socket,activeUserChat,showUsers,token,activeChatId,messageQuery,currentMessageIndex,setCurrentMessageIndex,setTotalFoundMessages}) {
+function TextBox({userNameInfo,socket,activeUserChat,showUsers,token,activeChatId,messageQuery,currentMessageIndex,setCurrentMessageIndex,setTotalFoundMessages}) {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
 
@@ -18,7 +18,7 @@ function TextBox({socket,activeUserChat,showUsers,token,activeChatId,messageQuer
       }
    };
 
-  
+
 
 
   const getMessages = async function () {
@@ -87,7 +87,7 @@ const handleSendClick = async () => {
   const newMessage = inputValue.trim();
   if (newMessage !== "") {
     await sendMessage(newMessage); // Wait for sendMessage to complete
-    await socket.emit('sendMessage', { message :newMessage, chatRoom: activeChatId, userRoom:activeUserChat.user.username,time:new Date().toLocaleTimeString() });
+    await socket.emit('sendMessage', { message :newMessage, chatRoom: activeChatId, userRoom:activeUserChat.user.username,time:new Date().toLocaleTimeString() ,from:userNameInfo.displayName});
     getMessages();
     setInputValue("");
     inputRef.current.focus();
@@ -186,7 +186,7 @@ const handleSendClick = async () => {
   <div className="chat-container">
     {messages.length > 0 ? (
       [...messages].map((message, index) => (
-        message.sender.username !== activeUserChat.user.username ? (
+        message.sender?.username !== activeUserChat.user.username ? (
           <ChatBubbleSent key={index} message={message} />
         ) : (
           <ChatBubbleRecived key={index} message={message} />

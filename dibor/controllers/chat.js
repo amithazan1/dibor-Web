@@ -1,6 +1,6 @@
 const chatService = require('../services/chat');
 const createChat = async (req, res) => {
-    const user = await chatService.createChat(req.body.username, req.headers.authorization);
+    const user = await chatService.createChat(req.body.username, req.username);
     if (user === -1) {
         return res.status(401).json({ errors: ['Unauthorized'] })
     } else  if (user === -2) {
@@ -13,7 +13,7 @@ const createChat = async (req, res) => {
 };
 
 const getChats = async (req, res) => {
-    const response = await chatService.getChats(req.headers.authorization);
+    const response = await chatService.getChats(req.username);
     if (response === -1) {
         return res.status(401).json({ errors: ['Unauthorized'] })
     } else {
@@ -23,7 +23,7 @@ const getChats = async (req, res) => {
 };
 
 const getChatById = async (req, res) => {
-    const response = await chatService.getChatById(req.params.id, req.headers.authorization);
+    const response = await chatService.getChatById(req.params.id);
     if (response === -1) {
         return res.status(401).json({ errors: ['Unauthorized'] })
     } else {
@@ -33,7 +33,7 @@ const getChatById = async (req, res) => {
 };
 
 const deleteChatById = async (req, res) => {
-    const response = await chatService.deleteChatById(req.params.id, req.headers.authorization);
+    const response = await chatService.deleteChatById(req.params.id, req.username);
     if (response === -1) {
         return res.status(401).json({ errors: ['Unauthorized'] })
     } else {
@@ -43,7 +43,7 @@ const deleteChatById = async (req, res) => {
 
 const postMessage = async (req, res) => {
     
- const response = await chatService.postMessage(req.params.id, req.body.msg, req.headers.authorization);
+ const response = await chatService.postMessage(req.params.id, req.body.msg,req.username);
      if (response === -1) {
         return res.status(401).json({ errors: ['Unauthorized'] })
     } else {
@@ -52,7 +52,7 @@ const postMessage = async (req, res) => {
     }};
 
 const getMessages = async (req, res) => {
-    const response = await chatService.getMessages(req.params.id, req.headers.authorization);
+    const response = await chatService.getMessages(req.params.id);
      if (response === -1) {
         return res.status(401).json({ errors: ['Unauthorized'] })
     } else {
