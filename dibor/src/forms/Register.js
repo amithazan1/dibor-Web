@@ -21,7 +21,7 @@ function Register() {
 
 
     useEffect(() => {
-        values.profilePic = btoa(picture)
+        values.profilePic = picture
     }, [picture]);
 
 

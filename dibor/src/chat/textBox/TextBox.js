@@ -1,46 +1,27 @@
 import { useState, useRef, useEffect } from "react";
 import ChatBubbleSent from './ChatBubbleSent'
 import ChatBubbleRecived from "./ChatBubbleRecived";
-import io from 'socket.io-client';
-const socket = io.connect('http://localhost:3001/');
+
 //all of the text logic
-function TextBox({userNameInfo,activeUserChat,showUsers,token,activeChatId,messageQuery,currentMessageIndex,setCurrentMessageIndex,setTotalFoundMessages}) {
+function TextBox({socket,activeUserChat,showUsers,token,activeChatId,messageQuery,currentMessageIndex,setCurrentMessageIndex,setTotalFoundMessages}) {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
 
   const chatRef = useRef(null);
 
- const isDisabled = activeChatId === 0
+ const isDisabled = (activeChatId === 0 || activeUserChat.user == null)
   const [messages, setMessages] = useState([]);
 
    const joinRoom = () => {
-    if (activeChatId !== "") {
-        console.log("enterd chat"+ activeChatId)
+    if (!isDisabled) {
         socket.emit("enterChat", activeChatId)
       }
    };
+
   
-   const joinUserRoom = () => {
-    if (userNameInfo.username !== undefined) {
-        console.log("enterd chat"+ userNameInfo.username)
-        socket.emit("userRoom", userNameInfo.username)
-      }
-  };
-
-
-  useEffect(() => {
-      joinRoom();
-      getMessages();
-  }, [activeChatId]);
-  
-    useEffect(() => {
-      joinUserRoom();
-}, [userNameInfo]);
-
 
 
   const getMessages = async function () {
-
     if (activeChatId != 0) {
   // Assuming you have the token stored in a variable called 'token'
     const res = await fetch(`http://localhost:12345/api/Chats/${activeChatId}/Messages`, {
@@ -59,19 +40,25 @@ function TextBox({userNameInfo,activeUserChat,showUsers,token,activeChatId,messa
 }
   // You can add code here to handle the response
   };
-  
-  useEffect(() => {
-  // Listen for 'new-message' event
 
-    socket.on('recivedMessage', (data) => {
+
+    useEffect(() => {
+      joinRoom();
       getMessages();
-    });
+  }, [activeUserChat]);
 
-    socket.on('recivedMessageAlert', (data) => {
-      console.log("alertttttttt")
-    });
 
-  }, [socket]);
+  useEffect(() => {
+    const handleReceivedMessage = (data) => {
+      getMessages();
+    };
+
+    socket.on('recivedMessage', handleReceivedMessage);
+
+    return () => {
+      socket.off('recivedMessage', handleReceivedMessage);
+    };
+  }, [socket, activeChatId]);
   
  
 
@@ -100,7 +87,7 @@ const handleSendClick = async () => {
   const newMessage = inputValue.trim();
   if (newMessage !== "") {
     await sendMessage(newMessage); // Wait for sendMessage to complete
-    socket.emit('sendMessage',{message: newMessage,roomChat:activeChatId,roomUser:activeUserChat.user.username});
+    await socket.emit('sendMessage', { message :newMessage, chatRoom: activeChatId, userRoom:activeUserChat.user.username,time:new Date().toLocaleTimeString() });
     getMessages();
     setInputValue("");
     inputRef.current.focus();

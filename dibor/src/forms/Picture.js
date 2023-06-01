@@ -2,8 +2,11 @@
 
 function Picture({ value, set }) {
     const change = (e) => {
-        const file = e.target.files[0];
-        set(URL.createObjectURL(file));
+        var reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () => {
+            set(reader.result)
+        };
     };
 
     return (

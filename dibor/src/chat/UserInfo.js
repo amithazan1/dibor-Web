@@ -1,6 +1,8 @@
 
 
 function UserInfo({  userNameInfo }) {
+// Assuming the variable `picture` contains the base64-encoded image data
+
 
 
   return (
@@ -13,7 +15,7 @@ function UserInfo({  userNameInfo }) {
   </div>
   <div className="offcanvas-body">
     <div className="d-flex align-items-center mb-3">
-      <img src={userNameInfo?.profilePic} className="rounded-circle me-3" id="profile-img-showcase" alt="Profile Picture" width={200}/>
+      <img src={userNameInfo.profilePic} className="rounded-circle me-3" id="profile-img-showcase" alt="Profile Picture" width={200}/>
       <div>
         <div className="fw-bold">{userNameInfo?.username}</div>
         <div className="text-muted">{userNameInfo?.displayName}</div>

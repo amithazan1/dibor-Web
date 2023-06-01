@@ -52,6 +52,15 @@ const userExists = (username, password) => {
 };
 */
 
+const getUser = (username) => {
+
+    for (const i in users) {
+        const user = users[i]
+        if (username === user.username) {
+            return user
+        }
+
+  /*
 const getUser = async (username, token) => {
     const response = await fetch(`http://localhost:12345/api/Users/${username}`, {
         method: 'get',
@@ -65,6 +74,7 @@ const getUser = async (username, token) => {
     }
     return await response.json();
 };
+*/
 
 
 
