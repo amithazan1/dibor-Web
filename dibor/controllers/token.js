@@ -1,7 +1,8 @@
 const tokenService = require('../services/token')
-
 const jwt = require("jsonwebtoken");
-const key = "shhhhhhhhhhhhhhhhh!!!!!";
+const { key } = require('./authorization');
+
+
 
 const login = async (req, res) => {
     const userExist = await tokenService.login(req.body.username, req.body.password);
