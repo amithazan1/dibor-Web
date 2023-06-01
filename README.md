@@ -24,16 +24,18 @@
 
 
 </ul><h2>Setup</h2>
-<hr><p>the app was created with react. to start follow the steps:</p><h5>Steps</h5><ul>
+<hr><p>the app was created with react running as a build with nodeJS server. to start follow the steps:</p><h5>Steps</h5><ul>
 <li>clone the repository</li>
 </ul><ul>
 <li>cd to the dibor folder</li>
 </ul><ul>
-<li>run the command 'npm install'</li>
+<li>run the server with the command node app.js</li>
 </ul><ul>
-<li>run the command 'npm start'</li>
+<li>the server will run as default on port 12345.</li>
 </ul><ul>
-<li>your default browser will open the project on port 3000.</li>
+<li>in your browser go to http://localhost:12345/</li>
+</ul><ul>
+<li>note that the dataBase will run at the default mongodb port in directory named dibor: mongodb://localhost:27017/dibor. the Socket.IO server will run at port 3001</li>
   
   </ul><h2>Features in chat</h2>
 <hr><ul>
