@@ -28,8 +28,10 @@
 <li>clone the repository</li>
 </ul><ul>
 <li>cd to the dibor folder</li>
+  </ul><ul>
+<li>install express with the command 'npm i express</li>
 </ul><ul>
-<li>run the server with the command node app.js</li>
+<li>run the server with the command 'node app.js'</li>
 </ul><ul>
 <li>the server will run as default on port 12345.</li>
 </ul><ul>
