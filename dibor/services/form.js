@@ -16,7 +16,14 @@ const createUser = async (username, password, displayName, profilePic) => {
 }
 
 const getUserByUsername = async (username) => {
-    return await User.find({ username: username });
+    const users = await User.find({ username: username });
+    if (users.length === 0) {
+        return -1;
+    } else {
+        const { username, displayName, profilePic } = users[0];
+        const user = { username, displayName, profilePic };
+        return user;
+    }
 }
 
 module.exports = { createUser, getUserByUsername }
