@@ -14,7 +14,13 @@ const createUser = async (req, res) => {
 }
 
 const getUserByUsername = async (req, res) => {
-    res.json(await userService.getUserByUsername(req.params.username))
+    const user = await userService.getUserByUsername(req.params.username);
+    if (user == -1) {
+        res.status(400).json({ errors: ['Username does not exists'] });
+    }
+    else {
+        res.status(200).send(user);
+    }
 }
 
 

@@ -22,8 +22,7 @@ const login = async (values) => {
         },
         body: JSON.stringify({ ...values })
     });
-    if (!response.ok)
-    {
+    if (!response.ok) {
         return 0;
     }
     return await response.text();
@@ -60,9 +59,22 @@ const getUser = (username) => {
         if (username === user.username) {
             return user
         }
+
+  /*
+const getUser = async (username, token) => {
+    const response = await fetch(`http://localhost:12345/api/Users/${username}`, {
+        method: 'get',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    });
+    if (!response.ok) {
+        return 0;
     }
-    return null
+    return await response.json();
 };
+*/
 
 
 
