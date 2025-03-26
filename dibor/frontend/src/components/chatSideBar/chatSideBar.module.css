@@ -1,0 +1,9 @@
+.logo {
+  width: 40px;
+  height: 40px;
+  margin: 10px;
+}
+
+.search-icon :hover {
+  color: rgb(88, 88, 88);
+}

@@ -1,0 +1,28 @@
+.top-bar-user-image {
+  width: 40px;
+  height: 40px;
+  margin: 10px;
+}
+
+.chat-background {
+  background-image: url("/chatBackground.jpg");
+  background-size: cover;
+  background-color: rgba(255, 255, 255, 0.6);
+  background-blend-mode: lighten;
+}
+
+.chat-bubble {
+  min-width: 80px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.sender {
+  background-color: #c3fcc0;
+  color: rgb(0, 0, 0);
+}
+
+.receiver {
+  background-color: #ffffff;
+  color: black;
+}
