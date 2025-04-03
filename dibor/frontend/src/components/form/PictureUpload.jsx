@@ -19,9 +19,9 @@ const PictureUpload = ({ onImageChange }) => {
 
   return (
     <div className="text-center">
-      <label htmlFor="profileImageInput" className="d-inline-block">
+      <label htmlFor="profileImageInput" className="d-inline-block mb-3">
         <img
-          src={profileImage || "./profilePic-defaul.png"}
+          src={profileImage || "/profilePic-default.png"}
           alt="Profile"
           className="rounded-circle border shadow-lg"
           style={{ width: "100px", height: "100px", cursor: "pointer" }}

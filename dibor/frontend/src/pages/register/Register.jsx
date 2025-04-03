@@ -1,5 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import PictureUpload from "../../components/form/PictureUpload";
+import styles from "../login/login.module.css";
+
+import useSignUp from "../../hooks/useSignUp";
 
 function Register() {
   const [profileImage, setProfileImage] = useState(null);
@@ -9,8 +14,8 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
-
   const [errors, setErrors] = useState({});
+  const [loading, signup] = useSignUp();
 
   const fieldsDescription = [
     {
@@ -77,18 +82,26 @@ function Register() {
     setErrors({ ...errors, [e.target.name]: "" }); // Clear error when typing
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Submitting:", formData);
       // Send data to backend
+      await signup({
+        username: formData.username,
+        displayName: formData.displayName,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        profilePic: profileImage,
+      });
     }
   };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="card w-50 h-75 p-4 d-flex flex-column align-items-center text-center">
-        <div className="title text-center mb-1">Fill the form</div>
+      <div className="card w-50 p-4 d-flex flex-column  justify-content-center align-items-center text-center">
+        <div className={`${styles["title"]} text-center m-1`}>
+          Fill the form
+        </div>
         <form
           className="w-100 needs-validation"
           onSubmit={handleSubmit}
@@ -97,7 +110,7 @@ function Register() {
           <PictureUpload onImageChange={setProfileImage} />
 
           {fieldsDescription.map((desc) => (
-            <div className="form-floating w-100 mt-2" key={desc.id}>
+            <div className="form-floating w-100 m-1" key={desc.id}>
               <input
                 type={desc.type}
                 className={`form-control w-100 ${
@@ -106,6 +119,7 @@ function Register() {
                 id={desc.id}
                 name={desc.name}
                 placeholder={desc.placeholder}
+                value={formData[desc.name]}
                 onChange={onChange}
                 required={desc.required}
               />
@@ -113,12 +127,14 @@ function Register() {
               <div className="invalid-feedback">{errors[desc.name]}</div>
             </div>
           ))}
-
-          <div className="text-center mt-2">Have an account?</div>
+          <Link to="/login">
+            <div className="text-center mt-2">Have an account?</div>
+          </Link>
           <button
-            className="w-100 submit-btn"
-            style={{ height: "55px" }}
+            className={`w-100 mt-2 ${styles["submit-btn"]}`}
+            style={{ height: "60px" }}
             type="submit"
+            disabled={loading}
           >
             Signup
           </button>

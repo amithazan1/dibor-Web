@@ -1,7 +1,9 @@
 const Chat = require("../models/chat");
 
-const getMessages = async (chatId) => {
-  const chat = await Chat.findById(chatId)
+const getMessages = async (receiverId, senderId) => {
+  const chat = await Chat.findOne({
+    participants: { $all: [senderId, receiverId] },
+  })
     .populate("messages")
     .sort({ "messages.createdAt": 1 }); // Sort messages by timestamp (oldest first)
 
