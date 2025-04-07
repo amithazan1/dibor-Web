@@ -8,4 +8,6 @@ router
   .route("/getAllMessages/:id")
   .get(verifyToken, chatController.getMessages);
 
+router.route("/getChats").get(verifyToken, chatController.getChats);
+
 module.exports = router;

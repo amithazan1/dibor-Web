@@ -9,10 +9,10 @@ const messageRoute = require("./routes/message");
 const chatRoute = require("./routes/chat");
 
 const connectToMongoDB = require("./db/connectToMongoDB");
+const { app, server } = require("./socket/socket");
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
-const app = express();
 
 app.use(express.json());
 app.use(cookieParser()); // Enables reading/writing cookies
@@ -28,7 +28,7 @@ app.use("/api/message", messageRoute);
 app.use("/api/chat", chatRoute);
 app.use("/api/user", userRoute);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   connectToMongoDB();
   console.log("Server listening in port", PORT);
 });

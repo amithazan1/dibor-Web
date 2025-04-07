@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
+import { useAuthContext } from "../context/AuthContext";
+import { useChatsContext } from "../context/ChatsContext";
+
 const useGetChats = () => {
   const [loading, setLoading] = useState(false);
-  const [chats, setChats] = useState([]);
+  const { chats, setChats } = useChatsContext();
+  const { authUser } = useAuthContext();
 
   useEffect(() => {
     const getChats = async () => {
       setLoading(true);
       try {
-        const res = await fetch("/api/user/getChats");
+        const res = await fetch("/api/chat/getChats");
         const data = await res.json();
 
         if (!res.ok) {
@@ -18,7 +22,17 @@ const useGetChats = () => {
           );
         }
 
-        setChats(data.users);
+        const chats = data.map((chat) => {
+          const otherUser = chat.participants.find(
+            (user) => user._id != authUser.id
+          );
+          if (!otherUser) {
+            otherUser = chat.participants[0];
+          }
+          return { id: chat.id, chatWith: otherUser };
+        });
+
+        setChats(chats);
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -27,9 +41,9 @@ const useGetChats = () => {
     };
 
     getChats();
-  }, []); // Runs once on mount
+  }, []);
 
-  return { loading, chats, setChats };
+  return { loading };
 };
 
 export default useGetChats;

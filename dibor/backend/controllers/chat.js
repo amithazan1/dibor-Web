@@ -14,4 +14,16 @@ const getMessages = async (req, res) => {
   }
 };
 
-module.exports = { getMessages };
+const getChats = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    // gel all the user's chats
+    const chats = await chatService.getChats(userId);
+    res.status(201).json(chats);
+  } catch (error) {
+    console.error("Error in getChats in chat controller:", error.message);
+    res.status(500).json({ errors: [error.message] });
+  }
+};
+module.exports = { getMessages, getChats };

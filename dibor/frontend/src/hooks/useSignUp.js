@@ -24,9 +24,9 @@ const useSignUp = () => {
       }
       localStorage.setItem(
         "chat-user",
-        JSON.stringify({ username: data.user.username, id: data.user._id })
+        JSON.stringify({ username: data.username, id: data._id })
       );
-      setAuthUser({ username: data.user.username, id: data.user._id });
+      setAuthUser({ username: data.username, id: data._id });
 
       toast.success("User created");
     } catch (error) {

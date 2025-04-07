@@ -4,8 +4,12 @@
   margin: 10px;
 }
 
-.search-icon :hover {
-  color: rgb(88, 88, 88);
+.search-button {
+  background: rgba(252, 211, 254, 1);
+}
+
+.search-button :hover {
+  background: rgba(121, 242, 248, 1);
 }
 
 .chat-container {

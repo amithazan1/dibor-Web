@@ -6,9 +6,11 @@ import Message from "./Message";
 import { useGetMessages } from "../../hooks/useGetMessages";
 import { useSelectedChatContext } from "../../context/SelectedChatContext";
 import { useAuthContext } from "../../context/AuthContext";
+import useListenMessages from "../../hooks/useListenMessages";
 
 export default function Messages() {
   const { loading, getMessages } = useGetMessages();
+  useListenMessages();
   const { messages, selectedChat } = useSelectedChatContext();
   const { authUser } = useAuthContext();
 
@@ -24,10 +26,18 @@ export default function Messages() {
     <div
       className={`d-flex flex-column border-start h-100 w-100 overflow-y-auto ${styles["chat-background"]}`}
     >
-      {loading && <p>Loading messages...</p>}
+      {loading && (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
 
       {messages.length === 0 && !loading && (
-        <p>Send a message to start the conversation</p>
+        <div className="d-flex justify-content-center">
+          Send a message to start the conversation
+        </div>
       )}
 
       {messages.map((message) => (

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 
-const SelectedChatContext = createContext();
+export const SelectedChatContext = createContext();
 
 export const useSelectedChatContext = () => {
   return useContext(SelectedChatContext);
