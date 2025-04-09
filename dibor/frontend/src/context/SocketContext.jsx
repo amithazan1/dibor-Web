@@ -17,7 +17,7 @@ export const SocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const socket = io(`http://localhost:${PORT}`, {
+      const socket = io(`https://dibor-web.onrender.com`, {
         query: {
           userId: authUser.id,
         },
