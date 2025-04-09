@@ -24,3 +24,11 @@
 .selected-chat {
   background-color: #f0f0f0;
 }
+
+.online {
+  color: green;
+}
+
+.offline {
+  color: red;
+}

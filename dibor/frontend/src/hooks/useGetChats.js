@@ -23,7 +23,7 @@ const useGetChats = () => {
         }
 
         const chats = data.map((chat) => {
-          const otherUser = chat.participants.find(
+          let otherUser = chat.participants.find(
             (user) => user._id != authUser.id
           );
           if (!otherUser) {

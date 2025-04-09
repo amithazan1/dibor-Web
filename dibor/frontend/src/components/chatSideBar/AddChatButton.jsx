@@ -25,10 +25,10 @@ export default function AddChatButton() {
     <>
       <OverlayTrigger
         placement="top"
-        overlay={<Tooltip id="add-chat">Add chat</Tooltip>}
+        overlay={<Tooltip id="add-chat">add chat</Tooltip>}
       >
         <button className="btn m-1 rounded-circle" onClick={handleShow}>
-          <FaCirclePlus />
+          <FaCirclePlus size={20} />
         </button>
       </OverlayTrigger>
 

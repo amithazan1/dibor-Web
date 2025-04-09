@@ -16,7 +16,12 @@ export default function ChatList({ loading, chats }) {
         </div>
       </div>
     );
-  if (!chats.length) return <p>No chats available</p>;
+  if (!chats.length)
+    return (
+      <div className="d-flex justify-content-center align-itmes-center">
+        You don`t have chats yet
+      </div>
+    );
 
   return (
     <ul className="list-group list-group-flush h-100 w-100 overflow-y-auto">

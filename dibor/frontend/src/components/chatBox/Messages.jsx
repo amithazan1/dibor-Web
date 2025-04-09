@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import styles from "./chatBox.module.css";
 
@@ -7,20 +7,28 @@ import { useGetMessages } from "../../hooks/useGetMessages";
 import { useSelectedChatContext } from "../../context/SelectedChatContext";
 import { useAuthContext } from "../../context/AuthContext";
 import useListenMessages from "../../hooks/useListenMessages";
+import { groupMessagesByDate } from "../../utils/groupMessagesByDate";
 
 export default function Messages() {
   const { loading, getMessages } = useGetMessages();
   useListenMessages();
   const { messages, selectedChat } = useSelectedChatContext();
   const { authUser } = useAuthContext();
-
-  console.log(messages);
+  // display the messages grouped by date
+  const groupedMessages = groupMessagesByDate(messages);
+  const bottomRef = useRef(null);
 
   useEffect(() => {
     if (selectedChat) {
       getMessages(selectedChat._id);
     }
   }, [selectedChat]);
+
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <div
@@ -40,14 +48,20 @@ export default function Messages() {
         </div>
       )}
 
-      {messages.map((message) => (
-        <Message
-          key={message._id}
-          message={message.content}
-          isSender={message.senderId == authUser.id}
-          timestamp={message.createdAt}
-        />
+      {Object.keys(groupedMessages).map((dateKey) => (
+        <div key={dateKey}>
+          <div className="text-center text-muted my-2">{dateKey}</div>
+          {groupedMessages[dateKey].map((message) => (
+            <Message
+              key={message._id}
+              message={message.content}
+              isSender={message.senderId == authUser.id}
+              timestamp={message.createdAt}
+            />
+          ))}
+        </div>
       ))}
+      <div ref={bottomRef} />
     </div>
   );
 }

@@ -12,7 +12,7 @@ export default function LogoutButton() {
       overlay={<Tooltip id="logout">logout</Tooltip>}
     >
       <button className="btn rounded-circle" onClick={logout}>
-        <RiLogoutCircleRLine />
+        <RiLogoutCircleRLine size={20} />
       </button>
     </OverlayTrigger>
   );

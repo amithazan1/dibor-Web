@@ -1,5 +1,7 @@
 import { useSocketContext } from "../../context/SocketContext";
 
+import styles from "./chatSideBar.module.css";
+
 export default function Chat({ id, displayName, profilePic }) {
   const { onlineUsers } = useSocketContext();
   const isOnline = onlineUsers.includes(id);
@@ -20,7 +22,9 @@ export default function Chat({ id, displayName, profilePic }) {
       />
       <div className="d-flex flex-column ">
         <div>{displayName}</div>
-        <div>{isOnline ? " online" : "offline"}</div>
+        <div className={`${isOnline ? styles["online"] : styles["offline"]}`}>
+          {isOnline ? "Online" : "Offline"}
+        </div>
       </div>
     </div>
   );
