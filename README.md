@@ -7,7 +7,7 @@
 </head>
 <body>
 
-  <h1>Dibor Chat App</h1>
+  <h1>💬 Dibor: Chat App</h1>
   <p><strong>Dibor</strong> is a real-time web chat application that lets users send and receive messages instantly.
     It supports one-on-one conversations, user authentication, and live chat updates using Socket.IO.</p>
 
