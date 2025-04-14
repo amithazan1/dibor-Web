@@ -1,5 +1,7 @@
 <h1>Dibor</h1>
-<hr><p>Dibor is a web-based chat application inspired by WhatsApp Web made by Amit Hazan &amp; Simon Fraiberg.</p><h2>General Information</h2>
+<hr><p>Dibor is a web-based chat application inspired by WhatsApp Web made by Amit Hazan &amp; Simon Fraiberg.</p>
+<p><b>TRY IT YOURSELF: </b> <a herf src =https://dibor-web.onrender.com/></p>
+<h2>General Information</h2>
 <hr><ul>
 <li>the app was created with react. the app is a project for a second year course name Advanced-programming-2 in bar-ilan university</li>
 </ul><h2>Technologies Used</h2>
