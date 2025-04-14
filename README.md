@@ -1,6 +1,6 @@
 <h1>Dibor</h1>
 <hr><p>Dibor is a web-based chat application inspired by WhatsApp Web made by Amit Hazan &amp; Simon Fraiberg.</p>
-<p><b>TRY IT YOURSELF: </b> <p><b>TRY IT YOURSELF: </b> <a href="https://dibor-web.onrender.com" target="_blank">DIBOR</a></p>
+<p><b>TRY IT YOURSELF: </b> <a href="https://dibor-web.onrender.com" target="_blank">DIBOR</a></p>
 </p>
 <h2>General Information</h2>
 <hr><ul>
