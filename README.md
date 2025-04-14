@@ -56,7 +56,7 @@
 
   <h2>✨ Features</h2>
   <ul>
-    <li>User authentication (signup & login)</li>
+    <li>User authentication with JWT token (signup & login)</li>
     <li>Start new chat or continue old ones</li>
     <li>Real-time messaging with Socket.IO</li>
     <li>Responsive design with Bootstrap</li>
@@ -75,13 +75,13 @@ npm run dev</code></pre>
   <h3>Backend</h3>
   <pre><code>cd dibor-Web/backend
 npm install
-node index.js</code></pre>
+npm run server</code></pre>
 
   <p>Make sure you have a `.env` file configured with your MongoDB URI and other secrets.</p>
 
   <h2>📁 Project Structure</h2>
   <ul>
-    <li><code>dibor/</code> – React frontend</li>
+    <li><code>frontend/</code> – React frontend</li>
     <li><code>backend/</code> – Node.js/Express backend</li>
     <li><code>socket.js</code> – Real-time messaging logic</li>
   </ul>
