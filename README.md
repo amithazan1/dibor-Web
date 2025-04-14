@@ -54,7 +54,7 @@ npm run server</code></pre>
   </ul>
 
   <h2>📬 Contact</h2>
-  <p>Created by <strong>Amit Hazan</strong> – Feel free to reach out or contribute on <a href="https://github.com/amithazan1">GitHub</a>!</p>
+  <p>Created by <strong>Amit Hazan & Simon Fraiberg</strong> – Feel free to reach out or contribute on <a href="https://github.com/amithazan1">GitHub</a>!</p>
 
 </body>
 </html>
